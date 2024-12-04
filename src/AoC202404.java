@@ -31,8 +31,8 @@ public class AoC202404 {
         int found = 0;
 
         //find horizontal matches
-        for(int i = 0; i < playField.length; i++) {
-            String thisLine = new String(playField[i]);
+        for (char[] chars : playField) {
+            String thisLine = new String(chars);
             found += StringUtils.countMatches(thisLine, "XMAS");
             found += StringUtils.countMatches(thisLine, "SAMX");
         }
@@ -40,8 +40,8 @@ public class AoC202404 {
         //find vertical matches
         for(int j = 0; j<playField.length; j++){
             String thisLine = "";
-            for(int i = 0; i<playField.length; i++){
-                thisLine += playField[i][j];
+            for (char[] chars : playField) {
+                thisLine += chars[j];
             }
             found += StringUtils.countMatches(thisLine, "XMAS");
             found += StringUtils.countMatches(thisLine, "SAMX");
