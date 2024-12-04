@@ -19,6 +19,13 @@ public class AoC202401 {
     private AoC202401() {
     }
 
+    /**
+     * Reads the input file and returns the data for the day's challenge.
+     *
+     * @param path path to the input file
+     * @return the data as a list of lists
+     * @throws FileNotFoundException
+     */
     private static List[] readFile(String path) throws FileNotFoundException {
         List<Integer> left = new ArrayList<>();
         List<Integer> right = new ArrayList<>();
