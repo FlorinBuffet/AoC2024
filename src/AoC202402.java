@@ -5,8 +5,27 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * This class solves AdventofCode 2024, Day 2.
+ *
+ * @author Florin Buffet
+ * @version V1.1
+ */
 public class AoC202402 {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private AoC202402() {
+    }
+
+    /**
+     * Reads the input file and returns the data for the day's challenge.
+     *
+     * @param path path to the input file
+     * @return the data as a list of lists of integers
+     * @throws FileNotFoundException
+     */
     private static ArrayList<ArrayList<Integer>> readFile(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = new ArrayList<>();
 
@@ -22,30 +41,22 @@ public class AoC202402 {
         return inputData;
     }
 
+    /**
+     * @param path path to the input file
+     * @return the result for the first part of the challenge
+     * @throws FileNotFoundException
+     */
     public static int partOne(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = readFile(path);
 
         int safeReports = 0;
         while (!inputData.isEmpty()) {
-            List<Integer> currentSample = inputData.removeFirst();
-            int lastNumber = currentSample.removeFirst();
-            boolean isIncreasing = false;
-            boolean isDecreasing = false;
-            boolean isSafe = true;
+            ArrayList<Integer> currentSample = inputData.removeFirst();
 
-            for (int number : currentSample) {
-                int diff = Math.abs(number - lastNumber);
-                if (diff < 1 || diff > 3) {
-                    isSafe = false;
-                    break;
-                }
-                if (number > lastNumber) {
-                    isIncreasing = true;
-                } else if (number < lastNumber) {
-                    isDecreasing = true;
-                }
-                lastNumber = number;
-            }
+            boolean[] checkResult = checkSample(currentSample);
+            boolean isSafe = checkResult[0];
+            boolean isIncreasing = checkResult[1];
+            boolean isDecreasing = checkResult[2];
 
             if (isSafe && (isIncreasing ^ isDecreasing)) safeReports++;
         }
@@ -53,6 +64,11 @@ public class AoC202402 {
         return safeReports;
     }
 
+    /**
+     * @param path path to the input file
+     * @return the result for the second part of the challenge
+     * @throws FileNotFoundException
+     */
     public static int partTwo(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = readFile(path);
 
@@ -63,30 +79,45 @@ public class AoC202402 {
             for (int i = 0; i < currentSample.size(); i++) {
                 ArrayList<Integer> currentCase = new ArrayList<>(currentSample);
 
+                //noinspection SuspiciousListRemoveInLoop
                 currentCase.remove(i);
 
-                int lastNumber = currentCase.removeFirst();
-                boolean isIncreasing = false;
-                boolean isDecreasing = false;
-                boolean isSafe = true;
+                boolean[] checkResult = checkSample(currentCase);
+                boolean isSafe = checkResult[0];
+                boolean isIncreasing = checkResult[1];
+                boolean isDecreasing = checkResult[2];
 
-                for (int number : currentCase) {
-                    int diff = Math.abs(number - lastNumber);
-                    if (diff < 1 || diff > 3) {
-                        isSafe = false;
-                        break;
-                    }
-                    if (number > lastNumber) {
-                        isIncreasing = true;
-                    } else if (number < lastNumber) {
-                        isDecreasing = true;
-                    }
-                    lastNumber = number;
-                }
                 if (isSafe && (isIncreasing ^ isDecreasing)) safeVariant = true;
             }
             if (safeVariant) safeReports++;
         }
         return safeReports;
+    }
+
+
+    @SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+    private static boolean[] checkSample(ArrayList<Integer> currentSample) {
+        int lastNumber = currentSample.removeFirst();
+        boolean isIncreasing = false;
+        boolean isDecreasing = false;
+        boolean isSafe = true;
+
+        for (int number : currentSample) {
+            int diff = Math.abs(number - lastNumber);
+            if (diff < 1 || diff > 3) {
+                isSafe = false;
+            } else if (number > lastNumber) {
+                isIncreasing = true;
+            } else if (number < lastNumber) {
+                isDecreasing = true;
+            }
+            lastNumber = number;
+        }
+        boolean[] results = new boolean[3];
+        results[0] = isSafe;
+        results[1] = isIncreasing;
+        results[2] = isDecreasing;
+
+        return results;
     }
 }
