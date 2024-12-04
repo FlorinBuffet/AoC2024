@@ -8,5 +8,7 @@ public class Main {
         System.out.println("2024 Day 02, Part 2: "+AoC202402.partTwo("data/AoC_2024_02.txt"));
         System.out.println("2024 Day 03, Part 1: "+AoC202403.partOne("data/AoC_2024_03.txt"));
         System.out.println("2024 Day 03, Part 2: "+AoC202403.partTwo("data/AoC_2024_03.txt"));
+        System.out.println("2024 Day 04, Part 1: "+AoC202404.partOne("data/AoC_2024_04.txt"));
+        System.out.println("2024 Day 04, Part 2: "+AoC202404.partTwo("data/AoC_2024_04.txt"));
     }
 }
