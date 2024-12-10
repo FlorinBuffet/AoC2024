@@ -18,7 +18,7 @@ public class Main {
      */
     @SuppressWarnings("DuplicateStringLiteralInspection")
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.println("2024 Day 10, Part 1: "+AoC202410.partOne("data/AoC_2024_10.txt"));
-        System.out.println("2024 Day 10, Part 2: "+AoC202410.partTwo("data/AoC_2024_10.txt"));
+        System.out.println("2024 Day 09, Part 1: "+AoC202409.partOne("data/AoC_2024_09.txt"));
+        System.out.println("2024 Day 09, Part 2: "+AoC202409.partTwo("data/AoC_2024_09.txt"));
     }
 }
