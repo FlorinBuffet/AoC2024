@@ -18,17 +18,7 @@ public class Main {
      */
     @SuppressWarnings("DuplicateStringLiteralInspection")
     public static void main(String[] args) throws FileNotFoundException {
-        System.out.println("2024 Day 01, Part 1: "+AoC202401.partOne("data/AoC_2024_01.txt"));
-        System.out.println("2024 Day 01, Part 2: "+AoC202401.partTwo("data/AoC_2024_01.txt"));
-        System.out.println("2024 Day 02, Part 1: "+AoC202402.partOne("data/AoC_2024_02.txt"));
-        System.out.println("2024 Day 02, Part 2: "+AoC202402.partTwo("data/AoC_2024_02.txt"));
-        System.out.println("2024 Day 03, Part 1: "+AoC202403.partOne("data/AoC_2024_03.txt"));
-        System.out.println("2024 Day 03, Part 2: "+AoC202403.partTwo("data/AoC_2024_03.txt"));
-        System.out.println("2024 Day 04, Part 1: "+AoC202404.partOne("data/AoC_2024_04.txt"));
-        System.out.println("2024 Day 04, Part 2: "+AoC202404.partTwo("data/AoC_2024_04.txt"));
-        System.out.println("2024 Day 05, Part 1: "+AoC202405.partOne("data/AoC_2024_05.txt"));
-        System.out.println("2024 Day 05, Part 2: "+AoC202405.partTwo("data/AoC_2024_05.txt"));
-        System.out.println("2024 Day 06, Part 1: "+AoC202406.partOne("data/AoC_2024_06.txt"));
-        System.out.println("2024 Day 06, Part 2: "+AoC202406.partTwo("data/AoC_2024_06.txt"));
+        System.out.println("2024 Day 10, Part 1: "+AoC202410.partOne("data/AoC_2024_10.txt"));
+        System.out.println("2024 Day 10, Part 2: "+AoC202410.partTwo("data/AoC_2024_10.txt"));
     }
 }
