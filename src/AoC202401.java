@@ -9,7 +9,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 1.
  *
  * @author Florin Buffet
- * @version V1.2
+ * @version V1.3
  */
 public class AoC202401 {
 
@@ -24,7 +24,7 @@ public class AoC202401 {
     /**
      * Reads the input file and returns the data for the day's challenge.
      *
-     * @param path path to the input file
+     * @param path the path to the input file
      * @return the data as a list of lists
      * @throws FileNotFoundException if the file is not found
      */
@@ -43,19 +43,25 @@ public class AoC202401 {
     }
 
     /**
+     * Calculates the result for the first part of the challenge.
+     *
      * @param path path to the input file
-     * @return the result for the first part of the challenge
+     * @return the result as an integer.
      * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
+        // Read the input file and get the data as two lists
         //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
+
+        // Sort both lists
         Collections.sort(left);
         Collections.sort(right);
 
         int returnVal = 0;
+        // Calculate the sum of absolute differences between corresponding elements of the two lists
         for (int i = 0; i < left.size(); i++) {
             returnVal += Math.abs(left.get(i) - right.get(i));
         }
@@ -63,17 +69,21 @@ public class AoC202401 {
     }
 
     /**
-     * @param path path to the input file
-     * @return the result for the second part of the challenge
+     * Calculates the result for the second part of the challenge.
+     *
+     * @param path the path to the input file
+     * @return the result as an integer.
      * @throws FileNotFoundException if the file is not found
      */
     public static long partTwo(String path) throws FileNotFoundException {
+        // Read the input file and get the data as two lists
         //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
 
         long returnVal = 0;
+        // Calculate the sum of the product of each number in the left list and its frequency in the right list
         for (int num : left) {
             returnVal += (long) Collections.frequency(right, num) * num;
         }
