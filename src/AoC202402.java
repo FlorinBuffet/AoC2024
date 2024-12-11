@@ -9,7 +9,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 2.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class AoC202402 {
 
@@ -22,9 +22,9 @@ public class AoC202402 {
     /**
      * Reads the input file and returns the data for the day's challenge.
      *
-     * @param path path to the input file
+     * @param path the path to the input file
      * @return the data as a list of lists of integers
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     private static ArrayList<ArrayList<Integer>> readFile(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = new ArrayList<>();
@@ -42,9 +42,11 @@ public class AoC202402 {
     }
 
     /**
-     * @param path path to the input file
-     * @return the result for the first part of the challenge
-     * @throws FileNotFoundException
+     * Calculates the result for the first part of the challenge.
+     *
+     * @param path the path to the input file
+     * @return the result as an integer.
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = readFile(path);
@@ -65,9 +67,11 @@ public class AoC202402 {
     }
 
     /**
+     * Calculates the result for the second part of the challenge.
+     *
      * @param path path to the input file
      * @return the result for the second part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partTwo(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = readFile(path);
@@ -95,6 +99,12 @@ public class AoC202402 {
     }
 
 
+    /**
+     * Checks if the sample is safe, increasing, or decreasing.
+     *
+     * @param currentSample the sample to check
+     * @return an array of booleans: [isSafe, isIncreasing, isDecreasing]
+     */
     @SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
     private static boolean[] checkSample(ArrayList<Integer> currentSample) {
         int lastNumber = currentSample.removeFirst();
