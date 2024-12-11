@@ -52,8 +52,10 @@ public class AoC202411 {
      * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
+        long startTime = System.currentTimeMillis();
         List<Long> data = readFile(path);
         for (int i = 0; i < ITERATIONS_PART_ONE; i++) calculateIterationPartOne(data);
+        System.out.println(System.currentTimeMillis() - startTime);
         return data.size();
     }
 
@@ -62,17 +64,18 @@ public class AoC202411 {
      *
      * @param list input list of longs
      */
+    @SuppressWarnings({"NumericCastThatLosesPrecision", "NonReproducibleMathCall"})
     private static void calculateIterationPartOne(List<Long> list) {
         for (int i = 0; i < list.size(); i++) {
             long current = list.remove(i);
+            int intLength = ((int) Math.log10(current) + 1);
             if (current == 0L) {
                 list.add(i, 1L);
-            } else if ((current + "").length() % 2 == 0) {
-                String complete = current + "";
-                long first = Long.parseLong(complete.substring(0, complete.length() / 2));
-                long second = Long.parseLong(complete.substring(complete.length() / 2));
-                list.add(i, first);
-                list.add(i + 1, second);
+            } else if (((int) Math.log10(current) + 1) % 2 == 0) {
+                //noinspection IntegerDivisionInFloatingPointContext
+                int halfNumber = (int) Math.pow(10, intLength / 2);
+                list.add(i, current / halfNumber);
+                list.add(i + 1, current % halfNumber);
                 //noinspection AssignmentToForLoopParameter
                 i++;
             } else {
