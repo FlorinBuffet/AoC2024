@@ -9,9 +9,11 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 1.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class AoC202401 {
+
+    private static final char INPUT_FILE_SPLIT_CHARACTER = ' ';
 
     /**
      * Private constructor to prevent instantiation.
@@ -24,7 +26,7 @@ public class AoC202401 {
      *
      * @param path path to the input file
      * @return the data as a list of lists
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     private static List[] readFile(String path) throws FileNotFoundException {
         List<Integer> left = new ArrayList<>();
@@ -33,8 +35,8 @@ public class AoC202401 {
         Scanner scanner = new Scanner(file);
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
-            left.add(Integer.parseInt(data.substring(0, data.indexOf(' '))));
-            right.add(Integer.parseInt(data.substring(data.indexOf(' ') + 1).trim()));
+            left.add(Integer.parseInt(data.substring(0, data.indexOf(INPUT_FILE_SPLIT_CHARACTER))));
+            right.add(Integer.parseInt(data.substring(data.indexOf(INPUT_FILE_SPLIT_CHARACTER) + 1).trim()));
         }
         scanner.close();
         return new List[]{left, right};
@@ -43,9 +45,10 @@ public class AoC202401 {
     /**
      * @param path path to the input file
      * @return the result for the first part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
+        //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
@@ -62,9 +65,10 @@ public class AoC202401 {
     /**
      * @param path path to the input file
      * @return the result for the second part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static long partTwo(String path) throws FileNotFoundException {
+        //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
