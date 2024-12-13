@@ -64,7 +64,7 @@ public class AoC202413 {
     public static int partOne(String path) throws FileNotFoundException {
         List<Integer> lists = readFile(path);
 
-        int sum = 0 ;
+        int sum = 0;
 
         while (lists.size() > 1) {
             int buttonAX = lists.removeFirst();
@@ -74,41 +74,31 @@ public class AoC202413 {
             int targetX = lists.removeFirst();
             int targetY = lists.removeFirst();
 
-            int[][][] dp = new int[targetX+1][targetY+1][3];
-            dp[0][0][0] = 1;
-            dp[0][0][1] = 0;
-            dp[0][0][2] = 0;
-            for (int x = Math.min(buttonAX, buttonBX); x <= targetX; x++) {
-                for (int y = Math.min(buttonAY, buttonBY); y <= targetY; y++) {
-                    int buttonApreviousCost = Integer.MAX_VALUE - BUTTON_A_COST;
-                    int buttonBpreviousCost = Integer.MAX_VALUE - BUTTON_B_COST;
-
-                    if (x - buttonAX >= 0 && y - buttonAY >= 0 && dp[x - buttonAX][y - buttonAY][0] == 1) {
-                        buttonApreviousCost = dp[x - buttonAX][y - buttonAY][1] * BUTTON_A_COST + dp[x - buttonAX][y - buttonAY][2] * BUTTON_B_COST;
-                    }
-                    if (x - buttonBX >= 0 && y - buttonBY >= 0 && dp[x - buttonBX][y - buttonBY][0] == 1) {
-                        buttonBpreviousCost = dp[x - buttonBX][y - buttonBY][1] * BUTTON_A_COST + dp[x - buttonBX][y - buttonBY][2] * BUTTON_B_COST;
-                    }
-                    if (buttonApreviousCost == Integer.MAX_VALUE - BUTTON_A_COST && buttonBpreviousCost == Integer.MAX_VALUE - BUTTON_B_COST) {
-                        dp[x][y][0] = 0;
-                    } else if (buttonApreviousCost + BUTTON_A_COST <= buttonBpreviousCost + BUTTON_B_COST) {
-                        dp[x][y][0] = 1;
-                        dp[x][y][1] = dp[x - buttonAX][y - buttonAY][1] + 1;
-                        dp[x][y][2] = dp[x - buttonAX][y - buttonAY][2];
-                    } else {
-                        dp[x][y][0] = 1;
-                        dp[x][y][1] = dp[x - buttonBX][y - buttonBY][1];
-                        dp[x][y][2] = dp[x - buttonBX][y - buttonBY][2] + 1;
-                    }
-                }
-            }
-            System.out.println(dp[targetX][targetY][0]);
-            if (dp[targetX][targetY][0] == 1){
-                sum += dp[targetX][targetY][1]*BUTTON_A_COST + dp[targetX][targetY][2]*BUTTON_B_COST;
+            double[] solution = solveSystem(buttonAX, buttonBX, targetX, buttonAY, buttonBY, targetY);
+            if (solution[0] == Math.floor(solution[0]) && solution[1] == Math.floor(solution[1])) {
+                sum += BUTTON_A_COST * (int) solution[0] + BUTTON_B_COST * (int) solution[1];
             }
         }
-
         return sum;
+    }
+
+    /**
+     * Solves a system of linear equations of the form:
+     * a1 * x + b1 * y = c1
+     * a2 * x + b2 * y = c2
+     *
+     * @param a1 coefficient of x in the first equation
+     * @param b1 coefficient of y in the first equation
+     * @param c1 constant term in the first equation
+     * @param a2 coefficient of x in the second equation
+     * @param b2 coefficient of y in the second equation
+     * @param c2 constant term in the second equation
+     * @return an array containing the values of x and y that solve the system of equations
+     */
+    private static double[] solveSystem(int a1, int b1, long c1, int a2, int b2, long c2) {
+        double y = (double) (c2 * a1 - c1 * a2) / (a1 * b2 - a2 * b1);
+        double x = (c1 - b1 * y) / a1;
+        return new double[]{x, y};
     }
 
     /**
@@ -120,6 +110,22 @@ public class AoC202413 {
      */
     public static long partTwo(String path) throws FileNotFoundException {
         List<Integer> lists = readFile(path);
-        return 0;
+
+        long sum = 0;
+
+        while (lists.size() > 1) {
+            int buttonAX = lists.removeFirst();
+            int buttonAY = lists.removeFirst();
+            int buttonBX = lists.removeFirst();
+            int buttonBY = lists.removeFirst();
+            int targetX = lists.removeFirst();
+            int targetY = lists.removeFirst();
+
+            double[] solution = solveSystem(buttonAX, buttonBX, targetX + 10000000000000L, buttonAY, buttonBY, targetY + 10000000000000L);
+            if (solution[0] == Math.floor(solution[0]) && solution[1] == Math.floor(solution[1])) {
+                sum += BUTTON_A_COST * (long) solution[0] + BUTTON_B_COST * (long) solution[1];
+            }
+        }
+        return sum;
     }
 }
