@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 3.
  *
@@ -37,13 +39,14 @@ public class AoC202414 {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
 
-        String regex = "p=(\\d+),(\\d+) v=(-?\\d+),(-?\\d)";
+        String regex = "p=(\\d+),(\\d+) v=(-?\\d+),(-?\\d+)";
         Pattern pattern = Pattern.compile(regex);
 
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             Matcher matcher = pattern.matcher(data);
             int[] currentSample = new int[4];
+            //noinspection ResultOfMethodCallIgnored
             matcher.find();
             currentSample[0] = Integer.parseInt(matcher.group(1));
             currentSample[1] = Integer.parseInt(matcher.group(2));
@@ -65,14 +68,12 @@ public class AoC202414 {
     public static int partOne(String path) throws FileNotFoundException {
         List<int[]> sampleSets = readFile(path);
 
-        for (int round = 0; round < ROUND_TO_PLAY; round++) {
 
+        for (int i = 0; i < ROUND_TO_PLAY; i++) {
             for (int[] sample : sampleSets) {
                 calculateNextPosition(sample);
             }
-            //printField(sampleSets);
         }
-
         return calculateSafetyFactor(sampleSets);
     }
 
@@ -86,35 +87,18 @@ public class AoC202414 {
      *               sample[3] is the velocity in the y direction.
      */
     private static void calculateNextPosition(int[] sample) {
-        sample[0] = (sample[0] + sample[2]);
-        sample[1] = (sample[1] + sample[3]);
-        sample[0] = sample[0] < 0 ? FIELD_WIDTH + sample[0] : sample[0] % (FIELD_WIDTH);
-        sample[1] = sample[1] < 0 ? FIELD_HEIGHT + sample[1] : sample[1] % (FIELD_HEIGHT);
+        sample[0] = (sample[0] + sample[2] + FIELD_WIDTH) % FIELD_WIDTH;
+        sample[1] = (sample[1] + sample[3] + FIELD_HEIGHT) % FIELD_HEIGHT;
     }
 
     /**
-     * Prints the field based on the positions of the samples.
+     * Calculates the safety factor based on the distribution of samples in the grid.
      *
-     * @param sampleSets a list of samples, where each sample is an array of integers:
-     *                   sample[0] is the x position,
-     *                   sample[1] is the y position,
-     *                   sample[2] is the velocity in the x direction (not used in this method),
-     *                   sample[3] is the velocity in the y direction (not used in this method).
+     * @param sampleSets a list of samples, where each sample is an array of integers
+     *                   representing the x position, y position, x velocity, and y velocity.
+     * @return the safety factor as an integer, calculated as the product of the number
+     *         of samples in each of the four quadrants of the grid.
      */
-    private static void printField(List<int[]> sampleSets) {
-        int[][] field = new int[FIELD_WIDTH][FIELD_HEIGHT];
-        for (int[] sample : sampleSets) {
-            field[sample[0]][sample[1]]++;
-        }
-        for (int i = 0; i < FIELD_HEIGHT; i++) {
-            for (int j = 0; j < FIELD_WIDTH; j++) {
-                System.out.print(field[j][i] == 0 ? "." : field[j][i]);
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
     private static int calculateSafetyFactor(List<int[]> sampleSets) {
         int[] quadrants = new int[4];
         for (int[] sample : sampleSets) {
@@ -128,20 +112,32 @@ public class AoC202414 {
                 quadrants[3]++;
             }
         }
-
         return quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3];
     }
 
     /**
-     * Calculates the result for the second part of the challenge.
+     * Calculates the result for the second part of the challenge. Hereby it assumes the resulting tree is aligned approximately in the center of the field as the safety factor is minimized.
      *
      * @param path the path to the input file
      * @return the result as an integer.
      * @throws FileNotFoundException if the file is not found
      */
-    public static long partTwo(String path) throws FileNotFoundException {
-        List<int[]> lists = readFile(path);
+    public static int partTwo(String path) throws FileNotFoundException {
+        List<int[]> sampleSets = readFile(path);
 
-        return 0;
+        int minSafetyFactor = Integer.MAX_VALUE;
+        int minSafetyFactorRound = 0;
+
+        for (int i = 0; i < 10000; i++) {
+            for (int[] sample : sampleSets) {
+                calculateNextPosition(sample);
+                int currentSafetyFactor = calculateSafetyFactor(sampleSets);
+                if (currentSafetyFactor < minSafetyFactor) {
+                    minSafetyFactor = currentSafetyFactor;
+                    minSafetyFactorRound = i;
+                }
+            }
+        }
+        return minSafetyFactorRound + 1;
     }
 }
