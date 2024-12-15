@@ -1,11 +1,10 @@
-import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 
 /**
  * This class solves AdventofCode 2024
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class Main {
     private Main() {
@@ -15,14 +14,13 @@ public class Main {
      * Main method to run the challenges.
      *
      * @param args command line arguments
-     * @throws FileNotFoundException if the specified file is not found
      */
     @SuppressWarnings("MagicNumber")
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
 
         // Please change the year and day to the desired challenge
         int year = 2024;
-        int day = 15;
+        int day = 1;
 
         String filePath = "data/AoC_" + year + "_" + String.format("%02d", day) + ".txt";
         //noinspection StringConcatenationMissingWhitespace
