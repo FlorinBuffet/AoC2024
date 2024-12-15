@@ -2,6 +2,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+//TODO: solve part 2
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 15.
  *

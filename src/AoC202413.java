@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 3.
  *

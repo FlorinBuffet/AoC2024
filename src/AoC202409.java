@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 9.
  *

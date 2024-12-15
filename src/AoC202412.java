@@ -2,6 +2,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 12.
  *

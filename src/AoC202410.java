@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+//TODO: cleanup class
+
 /**
  * This class solves AdventofCode 2024, Day 10.
  *

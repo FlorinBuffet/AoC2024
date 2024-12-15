@@ -4,6 +4,9 @@
  * @author Florin Buffet
  * @version V1.3
  */
+
+//TODO: cleanup class
+
 public class AoC202412_Bot {
     private int currentX;
     private int currentY;
