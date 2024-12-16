@@ -1,3 +1,5 @@
+package year2024;
+
 /**
  * This class is a helper for AdventofCode 2024, Day 12, Part 2.
  *

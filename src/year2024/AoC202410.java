@@ -1,3 +1,5 @@
+package year2024;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
