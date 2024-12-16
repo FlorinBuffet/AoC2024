@@ -39,14 +39,13 @@ public class AoC202415 {
             data = scanner.nextLine();
         }
 
-        String commands = "";
+        StringBuilder commands = new StringBuilder();
         while (scanner.hasNextLine()) {
-            commands += scanner.nextLine();
+            commands.append(scanner.nextLine());
         }
         scanner.close();
 
-        Object[] input = {grid, commands};
-        return input;
+        return new Object[]{grid, commands.toString()};
     }
 
     /**
@@ -71,14 +70,13 @@ public class AoC202415 {
             data = scanner.nextLine();
         }
 
-        String commands = "";
+        StringBuilder commands = new StringBuilder();
         while (scanner.hasNextLine()) {
-            commands += scanner.nextLine();
+            commands.append(scanner.nextLine());
         }
         scanner.close();
 
-        Object[] input = {grid, commands};
-        return input;
+        return new Object[]{grid, commands.toString()};
     }
 
     /**
@@ -120,14 +118,14 @@ public class AoC202415 {
      * Calculates the GPS sum for the grid.
      *
      * @param grid a 2D array representing the grid
-     * @return the sum of the GPS values, where each 'O' in the grid contributes
+     * @return the sum of the GPS values, where each 'O' or '[' in the grid contributes
      * 100 times its row index plus its column index to the sum.
      */
     private static int calculateGPSSum(char[][] grid) {
         int sum = 0;
         for (int row = 0; row < grid.length; row++) {
-            for (int col = 0; col < grid.length; col++) {
-                if (grid[row][col] == 'O') {
+            for (int col = 0; col < grid[row].length; col++) {
+                if (grid[row][col] == 'O' || grid[row][col] == '[') {
                     sum += 100 * row + col;
                 }
             }
@@ -250,8 +248,71 @@ public class AoC202415 {
         Object[] input = readFilePartTwo(path);
         char[][] grid = (char[][]) input[0];
         String commands = (String) input[1];
-        printGrid(grid);
 
-        return 0;
+        while (!commands.isEmpty()) {
+            char command = commands.charAt(0);
+            commands = commands.substring(1);
+            switch (command) {
+                case '<':
+                    moveOnRow(grid, -1);
+                    break;
+                case '^':
+                    moveOnColumnBig(grid, findRobot(grid)[0], findRobot(grid)[1], findRobot(grid)[1], -1);
+                    break;
+                case '>':
+                    moveOnRow(grid, 1);
+                    break;
+                case 'v':
+                    moveOnColumnBig(grid, findRobot(grid)[0], findRobot(grid)[1], findRobot(grid)[1], 1);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + command);
+            }
+        }
+        printGrid(grid);
+        return calculateGPSSum(grid);
+    }
+
+    /**
+     * Moves the robot and boxes in the grid along the column based on the given direction.
+     * This method handles the movement of wider boxes in the scaled-up warehouse layout.
+     *
+     * @param grid a 2D array representing the grid
+     * @param currentRow the current row index of the robot
+     * @param currentColumnLeft the leftmost column index of the box being moved
+     * @param currentColumnRight the rightmost column index of the box being moved
+     * @param direction the direction to move the robot and boxes, where -1 is up and 1 is down
+     * @return true if the move was successful, false otherwise
+     */
+    private static boolean moveOnColumnBig(char[][] grid, int currentRow, int currentColumnLeft, int currentColumnRight, int direction) {
+        int emptyFound = 0;
+        for (int currentColumn = currentColumnLeft; currentColumn <= currentColumnRight; currentColumn++) {
+            if (grid[currentRow + direction][currentColumn] == '#')
+                return false;
+            else if (grid[currentRow + direction][currentColumn] == '.')
+                emptyFound++;
+        }
+
+        if (emptyFound - 1 < currentColumnRight - currentColumnLeft) {
+            int extendLeft = 0;
+            int extendRight = 0;
+            if (grid[currentRow + direction][currentColumnLeft] == ']')
+                extendLeft = -1;
+            if (grid[currentRow + direction][currentColumnLeft] == '.')
+                extendLeft = 1;
+            if (grid[currentRow + direction][currentColumnRight] == '[')
+                extendRight = 1;
+            if (grid[currentRow + direction][currentColumnRight] == '.')
+                extendRight = -1;
+
+            if (!moveOnColumnBig(grid, currentRow + direction, currentColumnLeft + extendLeft, currentColumnRight + extendRight, direction)) {
+                return false;
+            }
+        }
+        for (int currentColumn = currentColumnLeft; currentColumn <= currentColumnRight; currentColumn++) {
+            grid[currentRow + direction][currentColumn] = grid[currentRow][currentColumn];
+            grid[currentRow][currentColumn] = '.';
+        }
+        return true;
     }
 }
