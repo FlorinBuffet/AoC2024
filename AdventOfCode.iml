@@ -19,10 +19,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/commons-lang3-3.17.0/commons-lang3-3.17.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/commons-lang3-3.17.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
