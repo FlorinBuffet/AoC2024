@@ -1,18 +1,19 @@
-import utility.Dijkstra;
+package year2024;
+
 import utility.Node;
+import utility.NodeAlgorithms;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-//TODO: solve part 2
 //TODO: cleanup class
 
 /**
  * This class solves AdventofCode 2024, Day 16.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202416 {
 
@@ -53,7 +54,7 @@ public class AoC202416 {
      * @return an array containing the start node and the end node
      */
     @SuppressWarnings("squid:S3776") //disable "Cognitive Complexity of methods should not be too high"
-    private static Object[] createGraph(char[][] grid){
+    private static Object[] createGraph(char[][] grid) {
         // 0 = up, 1 = right, 2 = down, 3 = left
         Node[][][] nodes = new Node[grid.length][grid.length][4];
         Node startNode = null;
@@ -83,6 +84,10 @@ public class AoC202416 {
                         nodes[i][j][1].addNeighbor(endNode, 0);
                         nodes[i][j][2].addNeighbor(endNode, 0);
                         nodes[i][j][3].addNeighbor(endNode, 0);
+                        endNode.addNeighbor(nodes[i][j][0], 100000); // cost of 100000 to prevent turning
+                        endNode.addNeighbor(nodes[i][j][1], 100000); // cost of 100000 to prevent turning
+                        endNode.addNeighbor(nodes[i][j][2], 100000); // cost of 100000 to prevent turning
+                        endNode.addNeighbor(nodes[i][j][3], 100000); // cost of 100000 to prevent turning
                     }
                 }
             }
@@ -94,21 +99,25 @@ public class AoC202416 {
                 if (grid[i][j] != '#') {
                     if (grid[i - 1][j] != '#') {
                         nodes[i][j][0].addNeighbor(nodes[i - 1][j][0], 1);
+                        nodes[i - 1][j][0].addNeighbor(nodes[i][j][0], 100000); // cost of 100000 to prevent turning
                     }
                     if (grid[i][j + 1] != '#') {
                         nodes[i][j][1].addNeighbor(nodes[i][j + 1][1], 1);
+                        nodes[i][j + 1][1].addNeighbor(nodes[i][j][1], 100000); // cost of 100000 to prevent turning
                     }
                     if (grid[i + 1][j] != '#') {
                         nodes[i][j][2].addNeighbor(nodes[i + 1][j][2], 1);
+                        nodes[i + 1][j][2].addNeighbor(nodes[i][j][2], 100000); // cost of 100000 to prevent turning
                     }
                     if (grid[i][j - 1] != '#') {
                         nodes[i][j][3].addNeighbor(nodes[i][j - 1][3], 1);
+                        nodes[i][j - 1][3].addNeighbor(nodes[i][j][3], 100000); // cost of 100000 to prevent turning
                     }
                 }
             }
         }
 
-        return new Object[]{startNode, endNode};
+        return new Object[]{startNode, endNode, nodes};
     }
 
     /**
@@ -123,10 +132,9 @@ public class AoC202416 {
         Object[] input = createGraph(grid);
         Node startNode = (Node) input[0];
         Node endNode = (Node) input[1];
-        Dijkstra.calculateShortestPaths(startNode);
+        NodeAlgorithms.dijkstra(startNode);
         return endNode.getLowestCost();
     }
-
 
     /**
      * Calculates the result for the second part of the challenge.
@@ -138,7 +146,29 @@ public class AoC202416 {
     public static long partTwo(String path) throws FileNotFoundException {
         char[][] grid = readFile(path);
         Object[] input = createGraph(grid);
+        Node startNode = (Node) input[0];
+        Node endNode = (Node) input[1];
+        Node[][][] nodes = (Node[][][]) input[2];
+        NodeAlgorithms.dijkstra(startNode);
+        NodeAlgorithms.markShortestPath(endNode);
+        return countFieldsOnShortestPath(nodes);
+    }
 
-        return 0;
+    /**
+     * Counts the number of fields that are on at least one shortest path in the given nodes array.
+     *
+     * @param nodes a 3D array of nodes representing the grid
+     * @return the number of fields on the shortest path
+     */
+    private static int countFieldsOnShortestPath(Node[][][] nodes) {
+        int fieldsOnShortestPath = 0;
+        for (Node[][] node : nodes) {
+            for (Node[] value : node) {
+                if (value[0] != null && (value[0].isOnShortestPath() || value[1].isOnShortestPath()
+                        || value[2].isOnShortestPath() || value[3].isOnShortestPath()))
+                    fieldsOnShortestPath++;
+            }
+        }
+        return fieldsOnShortestPath;
     }
 }
