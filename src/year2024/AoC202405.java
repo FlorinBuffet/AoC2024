@@ -7,14 +7,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
-//TODO: cleanup class
-//TODO: implement part 2
-
 /**
  * This class solves AdventofCode 2024, Day 5.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202405 {
 
@@ -27,9 +24,9 @@ public class AoC202405 {
     /**
      * Reads the input file and returns the data for the day's challenge.
      *
-     * @param path path to the input file
-     * @return the data as a list of chars
-     * @throws FileNotFoundException
+     * @param path the path to the input file
+     * @return the data as a list of lists
+     * @throws FileNotFoundException if the file is not found
      */
     private static Object[] readFile(String path) throws FileNotFoundException {
         File file = new File(path);
@@ -44,13 +41,13 @@ public class AoC202405 {
             String data = scanner.nextLine();
             if ("".equals(data)) {
                 emptyLineNotFound = false;
-            }else if(emptyLineNotFound){
+            } else if (emptyLineNotFound) {
                 String[] split = data.split("\\|");
                 int[] tmpArray = new int[2];
                 tmpArray[0] = Integer.parseInt(split[0]);
                 tmpArray[1] = Integer.parseInt(split[1]);
                 orderingRules.add(tmpArray);
-            }else{
+            } else {
                 String[] split = data.split(",");
                 List<Integer> currentPageNumbers = new ArrayList<>();
                 for (String s : split) {
@@ -67,47 +64,78 @@ public class AoC202405 {
     }
 
     /**
+     * Calculates the result for the first part of the challenge.
+     *
      * @param path path to the input file
-     * @return the result for the first part of the challenge
-     * @throws FileNotFoundException
+     * @return the result as an integer.
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
         Object[] objects = readFile(path);
         Iterable<int[]> orderingRules = (Iterable<int[]>) objects[0];
-        Iterable<List<Integer>> pageNumbers = (Iterable<List<Integer>>) objects[1];
-        int sum = 0;
+        List<List<Integer>> pageNumbers = (List<List<Integer>>) objects[1];
 
-        for (List<Integer> currentPageNumbers : pageNumbers) {
-            if (arePagesOrdered(currentPageNumbers, orderingRules)) {
-                sum += currentPageNumbers.get((currentPageNumbers.size()-1)/2);
+        return sumOfOrderedPages(pageNumbers, orderingRules);
+    }
+
+    /**
+     * Sums the values of the middle elements of the ordered pages and removes them from the list.
+     *
+     * @param pageNumbers   the list of lists of page numbers
+     * @param orderingRules the iterable collection of ordering rules
+     * @return the sum of the middle elements of the ordered pages
+     */
+    private static int sumOfOrderedPages(List<? extends List<Integer>> pageNumbers, Iterable<int[]> orderingRules) {
+        int sum = 0;
+        for (int current = 0; current < pageNumbers.size(); current++) {
+            if (arePagesOrdered(pageNumbers.get(current), orderingRules)) {
+                sum += pageNumbers.get(current).get((pageNumbers.get(current).size() - 1) / 2);
+                pageNumbers.remove(current); //remove the current file, if it is ordered
+                //noinspection AssignmentToForLoopParameter
+                current--; //decrement the current index to avoid skipping the next file
             }
         }
-        
         return sum;
     }
 
     /**
+     * Calculates the result for the second part of the challenge.
+     *
      * @param path path to the input file
-     * @return the result for the second part of the challenge
-     * @throws FileNotFoundException
+     * @return the result as an integer.
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partTwo(String path) throws FileNotFoundException {
         Object[] objects = readFile(path);
         Iterable<int[]> orderingRules = (Iterable<int[]>) objects[0];
-        Iterable<List<Integer>> pageNumbers = (Iterable<List<Integer>>) objects[1];
+        List<List<Integer>> pageNumbers = (List<List<Integer>>) objects[1];
 
+        //remove the ordered pages from the list as they are not relevant for the second part
+        sumOfOrderedPages(pageNumbers, orderingRules);
+
+        //sort the remaining pages according to the rules
         for (List<Integer> currentPageNumbers : pageNumbers) {
-
+            //noinspection OverlyLongLambda
+            currentPageNumbers.sort((o1, o2) -> {
+                for (int[] rule : orderingRules) {
+                    if (rule[0] == o1 && rule[1] == o2) {
+                        return -1;
+                    } else if (rule[0] == o2 && rule[1] == o1) {
+                        return 1;
+                    }
+                }
+                return 0;
+            });
         }
 
-        return 0;
+        return sumOfOrderedPages(pageNumbers, orderingRules);
     }
 
     /**
      * Checks if the given pages follow the rules.
      *
-     * @param pageNumbers The list of page numbers in the update.
-     * @param orderingRules  The list of rules represented as int arrays where rules[i][0] must be before rules[i][1].
+     * @param pageNumbers   The list of page numbers in the update.
+     * @param orderingRules The list of rules represented as int arrays where rules[i][0] must be before rules[i][1].
      * @return True if the update is correctly ordered according to the rules, false otherwise.
      */
     private static boolean arePagesOrdered(List<Integer> pageNumbers, Iterable<int[]> orderingRules) {
@@ -124,18 +152,6 @@ public class AoC202405 {
             }
         }
         return ordered;
-    }
-
-    /**
-     * Sorts the given pages according to the rules.
-     *
-     * @param pageNumbers The list of page numbers in the update.
-     * @param orderingRules  The list of rules represented as int arrays where rules[i][0] must be before rules[i][1].
-     * @return True if the update is correctly ordered according to the rules, false otherwise.
-     */
-    private static boolean sortPages(List<Integer> pageNumbers, Iterable<int[]> orderingRules) {
-
-        return true;
     }
 }
 
