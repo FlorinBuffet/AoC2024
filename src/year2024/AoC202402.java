@@ -11,7 +11,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 2.
  *
  * @author Florin Buffet
- * @version V1.2
+ * @version V1.3
  */
 public class AoC202402 {
 
@@ -28,6 +28,7 @@ public class AoC202402 {
      * @return the data as a list of lists of integers
      * @throws FileNotFoundException if the file is not found
      */
+    @SuppressWarnings("DynamicRegexReplaceableByCompiledPattern")
     private static ArrayList<ArrayList<Integer>> readFile(String path) throws FileNotFoundException {
         ArrayList<ArrayList<Integer>> inputData = new ArrayList<>();
 
@@ -36,6 +37,7 @@ public class AoC202402 {
         while (scanner.hasNextLine()) {
             String data = scanner.nextLine();
             List<String> tmpList = Arrays.stream(data.split("\\s+")).toList();
+            //noinspection ObjectAllocationInLoop
             ArrayList<Integer> tmpListInt = new ArrayList<>(tmpList.stream().map(Integer::parseInt).toList());
             inputData.add(tmpListInt);
         }
@@ -83,6 +85,7 @@ public class AoC202402 {
             List<Integer> currentSample = inputData.removeFirst();
             boolean safeVariant = false;
             for (int i = 0; i < currentSample.size(); i++) {
+                //noinspection ObjectAllocationInLoop
                 ArrayList<Integer> currentCase = new ArrayList<>(currentSample);
 
                 //noinspection SuspiciousListRemoveInLoop

@@ -30,6 +30,7 @@ public class AoC202403 {
      * @return the data as a list of Strings
      * @throws FileNotFoundException if the file is not found
      */
+    @SuppressWarnings({"RegExpAnonymousGroup", "ObjectAllocationInLoop"})
     private static ArrayList<String> readFile(String path) throws FileNotFoundException {
         ArrayList<String> inputDataOne = new ArrayList<>();
 

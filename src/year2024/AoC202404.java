@@ -6,13 +6,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-//TODO: cleanup class
-
 /**
  * This class solves AdventofCode 2024, Day 4.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class AoC202404 {
 
@@ -27,8 +25,8 @@ public class AoC202404 {
      *
      * @param path path to the input file
      * @return the data as a list of chars
-     * @throws FileNotFoundException
      */
+    @SuppressWarnings({"ObjectAllocationInLoop", "DuplicatedCode"})
     private static char[][] readFile(String path) throws FileNotFoundException {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
@@ -53,7 +51,7 @@ public class AoC202404 {
     /**
      * @param path path to the input file
      * @return the result for the first part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
         char[][] playField = readFile(path);
@@ -86,48 +84,47 @@ public class AoC202404 {
     }
 
     private static String columnAsString(char[][] playField, int i) {
-        //noinspection NonConstantStringShouldBeStringBuffer
-        String thisColumn = "";
+        StringBuilder thisColumn = new StringBuilder();
         for (char[] chars : playField) {
-            thisColumn += chars[i];
+            thisColumn.append(chars[i]);
         }
-        return thisColumn;
+        return thisColumn.toString();
     }
 
     /**
-     * Check if the diagonal from top left to bottom right contains the word "XMAS" or "SAMX".
+     * Checks if the diagonal from the top-left to the bottom-right contains the word "XMAS" or "SAMX".
      *
-     * @param playField
-     * @param i
-     * @param j
-     * @return true if the diagonal contains "XMAS" or "SAMX"
+     * @param playField the 2D array representing the play field
+     * @param i the row index of the bottom-right character in the diagonal
+     * @param j the column index of the bottom-right character in the diagonal
+     * @return true if the diagonal contains "XMAS" or "SAMX", false otherwise
      */
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private static boolean checkDiagonalFromTopLeft(char[][] playField, int i, int j) {
-        boolean forward = playField[i - 3][j - 3] == 'X' && playField[i - 2][j - 2] == 'M' && playField[i - 1][j - 1] == 'A' && playField[i][j] == 'S';
-        boolean backward = playField[i - 3][j - 3] == 'S' && playField[i - 2][j - 2] == 'A' && playField[i - 1][j - 1] == 'M' && playField[i][j] == 'X';
-        return forward || backward;
+        boolean fw = playField[i - 3][j - 3] == 'X' && playField[i - 2][j - 2] == 'M' && playField[i - 1][j - 1] == 'A' && playField[i][j] == 'S';
+        boolean bw = playField[i - 3][j - 3] == 'S' && playField[i - 2][j - 2] == 'A' && playField[i - 1][j - 1] == 'M' && playField[i][j] == 'X';
+        return fw || bw;
     }
 
     /**
-     * Check if the diagonal from top right to bottom left contains the word "XMAS" or "SAMX".
+     * Checks if the diagonal from the top-right to the bottom-left contains the word "XMAS" or "SAMX".
      *
-     * @param playField
-     * @param i
-     * @param j
-     * @return true if the diagonal contains "XMAS" or "SAMX"
+     * @param playField the 2D array representing the play field
+     * @param i the row index of the bottom-left character in the diagonal
+     * @param j the column index of the bottom-left character in the diagonal
+     * @return true if the diagonal contains "XMAS" or "SAMX", false otherwise
      */
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private static boolean checkDiagonalFromTopRight(char[][] playField, int i, int j) {
-        boolean forward = playField[i - 3][j + 3] == 'X' && playField[i - 2][j + 2] == 'M' && playField[i - 1][j + 1] == 'A' && playField[i][j] == 'S';
-        boolean backward = playField[i - 3][j + 3] == 'S' && playField[i - 2][j + 2] == 'A' && playField[i - 1][j + 1] == 'M' && playField[i][j] == 'X';
-        return forward || backward;
+        boolean fw = playField[i - 3][j + 3] == 'X' && playField[i - 2][j + 2] == 'M' && playField[i - 1][j + 1] == 'A' && playField[i][j] == 'S';
+        boolean bw = playField[i - 3][j + 3] == 'S' && playField[i - 2][j + 2] == 'A' && playField[i - 1][j + 1] == 'M' && playField[i][j] == 'X';
+        return fw || bw;
     }
 
     /**
      * @param path path to the input file
      * @return the result for the second part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partTwo(String path) throws FileNotFoundException {
         char[][] playField = readFile(path);
@@ -143,12 +140,12 @@ public class AoC202404 {
     }
 
     /**
-     * Check if the cross across the field contains "MAS" or "SAM".
+     * Checks if the cross centered at the given position contains the word "XMAS" or "SAMX".
      *
-     * @param playField
-     * @param i
-     * @param j
-     * @return true if the cross contains "MAS" or "SAM"
+     * @param playField the 2D array representing the play field
+     * @param i the row index of the center character in the cross
+     * @param j the column index of the center character in the cross
+     * @return true if the cross contains "XMAS" or "SAMX", false otherwise
      */
     @SuppressWarnings("OverlyComplexBooleanExpression")
     private static boolean checkCross(char[][] playField, int i, int j) {

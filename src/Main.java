@@ -20,7 +20,7 @@ public class Main {
 
         // Please change the year and day to the desired challenge
         int year = 2024;
-        int day = 17;
+        int day = 5;
 
         String filePath = "data/AoC_" + year + "_" + String.format("%02d", day) + ".txt";
         //noinspection StringConcatenationMissingWhitespace
@@ -28,6 +28,7 @@ public class Main {
 
         //noinspection OverlyBroadCatchBlock
         try {
+            //noinspection StringConcatenationMissingWhitespace
             Class<?> usedClass = Class.forName("year" + year + "." + className);
             Method partOneMethod = usedClass.getMethod("partOne", String.class);
             Method partTwoMethod = usedClass.getMethod("partTwo", String.class);

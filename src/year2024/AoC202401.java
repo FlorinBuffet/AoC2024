@@ -11,7 +11,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 1.
  *
  * @author Florin Buffet
- * @version V1.3
+ * @version V1.4
  */
 public class AoC202401 {
 
