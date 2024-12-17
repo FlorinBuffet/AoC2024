@@ -5,13 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
-//TODO: cleanup class
-
 /**
  * This class solves AdventofCode 2024, Day 6.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202406 {
 
@@ -24,9 +22,9 @@ public class AoC202406 {
     /**
      * Reads the input file and returns the data for the day's challenge.
      *
-     * @param path path to the input file
-     * @return the data as a list of chars
-     * @throws FileNotFoundException
+     * @param path the path to the input file
+     * @return the data as a list of lists
+     * @throws FileNotFoundException if the file is not found
      */
     private static char[][] readFile(String path) throws FileNotFoundException {
         File file = new File(path);
@@ -47,8 +45,11 @@ public class AoC202406 {
     }
 
     /**
+     * Calculates the result for the first part of the challenge.
+     *
      * @param path path to the input file
-     * @return the result for the first part of the challenge
+     * @return the result as an integer.
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
         char[][] data = readFile(path);
@@ -61,14 +62,15 @@ public class AoC202406 {
      * @param data the input field
      * @return how many fields could be visited, -1 if the walker is stuck
      */
-    public static int calculateUsedFields(char[][] data) {
+    @SuppressWarnings({"MethodWithMultipleReturnPoints", "OverlyLongMethod", "OverlyComplexMethod"})
+    private static int calculateUsedFields(char[][] data) {
         int x = 0;
         int y = 0;
 
         //find guard
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
-                if (data[i][j] == '<' || data[i][j] == '>' || data[i][j] == '^' || data[i][j] == 'v') {
+                if (isGuardAtPosition(j, data[i])) {
                     x = i;
                     y = j;
                 }
@@ -122,8 +124,22 @@ public class AoC202406 {
     }
 
     /**
+     * Checks if the given position in the data array contains the guard.
+     *
+     * @param j    the index to check in the data array
+     * @param data the array of characters representing the field
+     * @return true if the position contains a guard character ('<', '>', '^', 'v'), false otherwise
+     */
+    private static boolean isGuardAtPosition(int j, char[] data) {
+        return data[j] == '<' || data[j] == '>' || data[j] == '^' || data[j] == 'v';
+    }
+
+    /**
+     * Calculates the result for the second part of the challenge.
+     *
      * @param path path to the input file
-     * @return the result for the second part of the challenge
+     * @return the result as an integer.
+     * @throws FileNotFoundException if the file is not found
      */
     public static int partTwo(String path) throws FileNotFoundException {
         char[][] data = readFile(path);
@@ -145,7 +161,7 @@ public class AoC202406 {
     }
 
     /**
-     * Checks if the given pages follow the rules.
+     * Calculates the new position and direction of the walker.
      *
      * @param field The play field.
      * @param x     walker's x position
@@ -154,41 +170,42 @@ public class AoC202406 {
      */
     private static int[] newPosition(char[][] field, int x, int y) {
         //return array: x, y, direction (0: up, 1: right, 2: down, 3: left)
+        int[] returnValue = new int[3];
 
         if (field[x][y] == '<') {
             if (y == 0) {
-                return new int[]{-1, -1, 0};
+                returnValue = new int[]{-1, -1, 0};
             } else if (field[x][y - 1] == '#') {
-                return new int[]{x, y, 0};
+                returnValue = new int[]{x, y, 0};
             } else {
-                return new int[]{x, y - 1, 3};
+                returnValue = new int[]{x, y - 1, 3};
             }
         } else if (field[x][y] == '>') {
             if (y == field.length - 1) {
-                return new int[]{-1, -1, 0};
+                returnValue = new int[]{-1, -1, 0};
             } else if (field[x][y + 1] == '#') {
-                return new int[]{x, y, 2};
+                returnValue = new int[]{x, y, 2};
             } else {
-                return new int[]{x, y + 1, 1};
+                returnValue = new int[]{x, y + 1, 1};
             }
         } else if (field[x][y] == '^') {
             if (x == 0) {
-                return new int[]{-1, -1, 0};
+                returnValue = new int[]{-1, -1, 0};
             } else if (field[x - 1][y] == '#') {
-                return new int[]{x, y, 1};
+                returnValue = new int[]{x, y, 1};
             } else {
-                return new int[]{x - 1, y, 0};
+                returnValue = new int[]{x - 1, y, 0};
             }
         } else if (field[x][y] == 'v') {
             if (x == field.length - 1) {
-                return new int[]{-1, -1, 0};
+                returnValue = new int[]{-1, -1, 0};
             } else if (field[x + 1][y] == '#') {
-                return new int[]{x, y, 3};
+                returnValue = new int[]{x, y, 3};
             } else {
-                return new int[]{x + 1, y, 2};
+                returnValue = new int[]{x + 1, y, 2};
             }
         }
-        return new int[]{-1000, -1000, 0};
+        return returnValue;
     }
 }
 
