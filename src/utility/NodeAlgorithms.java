@@ -9,8 +9,9 @@ import java.util.PriorityQueue;
  * This class implements different Algorithms on the Node Class in the same package.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.1.1
  */
+@SuppressWarnings("FeatureEnvy")
 public class NodeAlgorithms {
 
     /**
@@ -45,15 +46,21 @@ public class NodeAlgorithms {
         }
     }
 
+    /**
+     * Marks the shortest path from the end node to the start node by setting the onShortestPath flag.
+     * This method traverses the nodes in reverse order from the end node to the start node.
+     *
+     * @param endNode the end node from which to start marking the shortest path
+     */
     public static void markShortestPath(Node endNode) {
         List<Node> queue = new ArrayList<>();
         endNode.setOnShortestPath(true);
         queue.add(endNode);
         while (!queue.isEmpty()) {
             Node currentNode = queue.removeFirst();
-            if (currentNode.isOnShortestPath()){
+            if (currentNode.isOnShortestPath()) {
                 for (Node neighbor : currentNode.getNeighbors().keySet()) {
-                    if (neighbor.getLowestCost() + neighbor.distanceToNeighbor(currentNode) == currentNode.getLowestCost()){
+                    if (neighbor.getLowestCost() + neighbor.distanceToNeighbor(currentNode) == currentNode.getLowestCost()) {
                         neighbor.setOnShortestPath(true);
                         queue.add(neighbor);
                     }
