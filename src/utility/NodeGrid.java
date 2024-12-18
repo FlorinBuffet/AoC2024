@@ -4,8 +4,9 @@ package utility;
  * This class implements a grid of nodes with undirected, unweighted edges.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.0.1
  */
+@SuppressWarnings("unused")
 public class NodeGrid {
     private Node[][] nodes;
     private Node start;
