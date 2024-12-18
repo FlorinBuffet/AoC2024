@@ -18,16 +18,16 @@ import java.util.stream.Stream;
  * It tests both parts of the challenge using sample and personal inputs.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.0
  */
 @SuppressWarnings("StringConcatenationMissingWhitespace")
-class AoC202402Test {
+class AoC202403Test {
 
     // set these constants to the day's input
     private static final int YEAR = 2024;
-    private static final int DAY = 2;
-    private static final int PERSONAL_RESULT_PART1 = 472;
-    private static final int PERSONAL_RESULT_PART2 = 520;
+    private static final int DAY = 3;
+    private static final int PERSONAL_RESULT_PART1 = 187194524;
+    private static final int PERSONAL_RESULT_PART2 = 127092535;
 
     // Creates the path to the sample files
     private static final String PATH_SAMPLE = "test/year" + YEAR + "Test/samples/AoC_" + YEAR + "_" + String.format("%02d", DAY) + "_";
@@ -117,7 +117,7 @@ class AoC202402Test {
      */
     private static Stream<Arguments> inputAndResultsSamples() {
         return Stream.of(
-                Arguments.of("a", 2, 4)
+                Arguments.of("a", 161, 48)
         );
     }
 }

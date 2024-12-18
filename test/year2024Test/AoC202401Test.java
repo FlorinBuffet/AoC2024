@@ -16,6 +16,9 @@ import java.util.stream.Stream;
 /**
  * This class contains unit tests for AdventofCode.
  * It tests both parts of the challenge using sample and personal inputs.
+ *
+ * @author Florin Buffet
+ * @version V1.1
  */
 @SuppressWarnings("StringConcatenationMissingWhitespace")
 class AoC202401Test {
