@@ -20,7 +20,7 @@ public class Main {
 
         // Please change the year and day to the desired challenge
         int year = 2024;
-        int day = 7;
+        int day = 18;
 
         String filePath = "data/AoC_" + year + "_" + String.format("%02d", day) + ".txt";
         //noinspection StringConcatenationMissingWhitespace

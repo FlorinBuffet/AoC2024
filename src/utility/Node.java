@@ -1,17 +1,20 @@
 package utility;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * This class implements an own graph network with directed, weighted edges.
- *
+ * Note: this class has a natural ordering that is inconsistent with equals.
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
+@SuppressWarnings({"unused", "CompareToUsesNonFinalVariable"})
 public class Node implements Comparable<Node> {
     private Map<Node, Integer> neighbors;
     private int lowestCost = Integer.MAX_VALUE;
+    @SuppressWarnings("RedundantFieldInitialization")
     private boolean onShortestPath = false;
 
     /**
@@ -74,6 +77,7 @@ public class Node implements Comparable<Node> {
      * @param cost     the cost associated with the edge between this node and the neighbor node
      */
     public void addBidirectionalNeighbor(Node neighbor, int cost) {
+        //noinspection UnnecessaryThis
         this.addNeighbor(neighbor, cost);
         neighbor.addNeighbor(this, cost);
     }
@@ -84,7 +88,7 @@ public class Node implements Comparable<Node> {
      * @return a map of neighbors and their associated costs
      */
     public Map<Node, Integer> getNeighbors() {
-        return neighbors;
+        return Collections.unmodifiableMap(neighbors);
     }
 
     /**
@@ -93,8 +97,47 @@ public class Node implements Comparable<Node> {
      * @param node the neighbor node to get the cost to
      * @return the cost to reach the neighbor node or Integer.MAX_VALUE if the neighbor node is not a neighbor
      */
-    public int isNeighbor(Node node) {
+    public int distanceToNeighbor(Node node) {
         return neighbors.getOrDefault(node, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Removes all neighbors from this node.
+     * Only removes the neighbors from this node, meaning the neighbors still have this node as a neighbor.
+     */
+    public void removeAllNeighbors() {
+        neighbors.clear();
+    }
+
+    /**
+     * Removes a neighbor from this node.
+     * @param node the neighbor to remove
+     */
+    @SuppressWarnings("WeakerAccess")
+    public void removeNeighbor(Node node) {
+        neighbors.remove(node);
+    }
+
+    /**
+     * Removes a neighbor from this node.
+     * Also removes this node from the neighbor's neighbors.
+     * @param node the neighbor to remove
+     */
+    public void removeBidirectionalNeighbor(Node node) {
+        //noinspection UnnecessaryThis
+        this.removeNeighbor(node);
+        node.removeNeighbor(this);
+    }
+
+    /**
+     * Removes all neighbors from this node.
+     * Also removes this node from all neighbors' neighbors.
+     */
+    public void removeAllBidirectionalNeighbors() {
+        for (Node neighbor : neighbors.keySet()) {
+            neighbor.removeNeighbor(this);
+        }
+        neighbors.clear();
     }
 
     /**
@@ -106,6 +149,27 @@ public class Node implements Comparable<Node> {
      */
     @Override
     public int compareTo(Node other) {
+        //noinspection UnnecessaryThis
         return Integer.compare(this.lowestCost, other.lowestCost);
+    }
+
+    /**
+     * Returns a string representation of the Node.
+     * Includes the lowest cost, whether it is on the shortest path, and its neighbors.
+     *
+     * @return a string representation of the Node
+     */
+    @Override
+    public String toString() {
+        return "Node:" +
+                "\n" +
+                "Lowest Cost: " +
+                lowestCost +
+                "\n" +
+                "On Shortest Path: " +
+                onShortestPath +
+                "\n" +
+                "Neighbors: " +
+                neighbors;
     }
 }

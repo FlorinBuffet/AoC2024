@@ -53,7 +53,7 @@ public class NodeAlgorithms {
             Node currentNode = queue.removeFirst();
             if (currentNode.isOnShortestPath()){
                 for (Node neighbor : currentNode.getNeighbors().keySet()) {
-                    if (neighbor.getLowestCost() + neighbor.isNeighbor(currentNode) == currentNode.getLowestCost()){
+                    if (neighbor.getLowestCost() + neighbor.distanceToNeighbor(currentNode) == currentNode.getLowestCost()){
                         neighbor.setOnShortestPath(true);
                         queue.add(neighbor);
                     }
