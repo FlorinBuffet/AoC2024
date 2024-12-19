@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-//TODO: cleanup class
-
 /**
  * This class solves AdventofCode 2024, Day 11.
  *
