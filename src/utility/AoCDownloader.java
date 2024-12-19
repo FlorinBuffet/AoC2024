@@ -115,6 +115,7 @@ public class AoCDownloader {
 
             // Load the properties file
             Properties prop = new Properties();
+            //noinspection DuplicateStringLiteralInspection
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("AoC.properties");
             prop.load(stream);
 

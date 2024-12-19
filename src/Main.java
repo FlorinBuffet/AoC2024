@@ -21,7 +21,7 @@ public class Main {
      * @throws IOException if the file is not found
      * @throws URISyntaxException if the URI is invalid
      */
-    @SuppressWarnings("MagicNumber")
+    @SuppressWarnings({"MagicNumber", "DuplicateStringLiteralInspection"})
     public static void main(String[] args) throws IOException, URISyntaxException {
 
         // Please change the year and day to the desired challenge
