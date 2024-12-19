@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
-//TODO: cleanup class
+//TODO: Fix Part 2
 
 /**
  * This class solves AdventofCode 2024, Day 9.
@@ -29,13 +29,13 @@ public class AoC202409 {
      *
      * @param path path to the input file
      * @return the data as a list of chars
-     * @throws FileNotFoundException
      */
     private static List<Integer> readFile(String path) throws FileNotFoundException {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
         String line = scanner.nextLine();
         scanner.close();
+        //noinspection DynamicRegexReplaceableByCompiledPattern
         int[] data = Stream.of(line.split("")).mapToInt(Integer::parseInt).toArray();
         List<Integer> list = new ArrayList<>();
         int fileNumber = 0;
@@ -53,7 +53,7 @@ public class AoC202409 {
     /**
      * @param path path to the input file
      * @return the result for the first part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static long partOne(String path) throws FileNotFoundException {
         List<Integer> data = readFile(path);
@@ -80,7 +80,7 @@ public class AoC202409 {
      * @param data the data to calculate the checksum
      * @return the checksum
      */
-    public static long calculateChecksum(List<Integer> data) {
+    private static long calculateChecksum(List<Integer> data) {
         long sum = 0;
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i) != -1) {
@@ -93,7 +93,7 @@ public class AoC202409 {
     /**
      * @param path path to the input file
      * @return the result for the second part of the challenge
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if the file is not found
      */
     public static long partTwo(String path) throws FileNotFoundException {
         List<Integer> data = readFile(path);
@@ -113,6 +113,7 @@ public class AoC202409 {
                         Collections.swap(data, targetPosition + i, endRight - size + i + 1);
                     }
                 } else {
+                    //noinspection AssignmentToForLoopParameter
                     endRight = endLeft + 1;
                 }
             }
@@ -120,7 +121,18 @@ public class AoC202409 {
         return calculateChecksum(data);
     }
 
-    public static int findTargetPosition(List<Integer> data, int targetSize, int endLeft) {
+    /**
+     * Finds the target position in the data list where a sequence of a given size can fit.
+     * The method scans the list up to the specified end position and looks for a sequence
+     * of `-1` values that matches the target size.
+     *
+     * @param data       the list of integers to search within
+     * @param targetSize the size of the sequence to find
+     * @param endLeft    the end position to stop the search
+     * @return the starting index of the target position if found, otherwise -1
+     */
+    @SuppressWarnings("MethodWithMultipleReturnPoints")
+    private static int findTargetPosition(List<Integer> data, int targetSize, int endLeft) {
         int currentSize = 0;
         for (int i = 0; i < endLeft; i++) {
             if (currentSize >= targetSize) {
