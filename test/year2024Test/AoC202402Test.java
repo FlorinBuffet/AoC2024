@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utility.AoCDownloader;
 
+import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Properties;
 import java.util.stream.Stream;
 
 /**
@@ -41,10 +42,12 @@ class AoC202402Test {
     private static final String ERROR_MESSAGE_PART1_PERSONAL = "AoC " + YEAR + ", Day " + DAY + ", Part 1, Personal failed";
     private static final String ERROR_MESSAGE_PART2_PERSONAL = "AoC " + YEAR + ", Day " + DAY + ", Part 2, Personal failed";
     private static final String ERROR_MESSAGE_FILE_NOT_FOUND = "AoC " + YEAR + ", Day " + DAY + ", Personal file not found";
+    private static final String ERROR_MESSAGE_PERSONAL_DISABLED = "Personal tests are disabled";
 
     // Creates the methods
     private static Method partOneMethod;
     private static Method partTwoMethod;
+    private static Properties properties;
 
     /**
      * Sets up the test environment by initializing the methods for part one and part two.
@@ -56,6 +59,9 @@ class AoC202402Test {
             Class<?> usedClass = Class.forName("year" + YEAR + ".AoC" + YEAR + String.format("%02d", DAY));
             partOneMethod = usedClass.getMethod("partOne", String.class);
             partTwoMethod = usedClass.getMethod("partTwo", String.class);
+            properties = new Properties();
+            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("AoC.properties");
+            properties.load(stream);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,7 +70,7 @@ class AoC202402Test {
     /**
      * Tests part one of the solution with sample inputs.
      *
-     * @param sample the sample input file name
+     * @param sample         the sample input file name
      * @param expectedResult the expected result for the sample input
      * @throws Exception if an error occurs during method invocation
      */
@@ -81,15 +87,16 @@ class AoC202402Test {
      */
     @Test
     void partOnePersonal() throws Exception {
-        Assumptions.assumeTrue(Files.exists(Path.of(PATH_PERSONAL)), ERROR_MESSAGE_FILE_NOT_FOUND);
+        Assumptions.assumeTrue("true".equals(properties.getProperty("TEST_FOR_PERSONAL_INPUT")), ERROR_MESSAGE_PERSONAL_DISABLED);
+        Assumptions.assumeTrue(AoCDownloader.doesFileExistOrIsDownloaded(YEAR, DAY, false), ERROR_MESSAGE_FILE_NOT_FOUND);
         Assertions.assertEquals(PERSONAL_RESULT_PART1, partOneMethod.invoke(null, PATH_PERSONAL), ERROR_MESSAGE_PART1_PERSONAL);
     }
 
     /**
      * Tests part two of the solution with sample inputs.
      *
-     * @param sample the sample input file name
-     * @param irrelevant an irrelevant parameter for part two
+     * @param sample         the sample input file name
+     * @param irrelevant     an irrelevant parameter for part two
      * @param expectedResult the expected result for the sample input
      * @throws Exception if an error occurs during method invocation
      */
@@ -106,7 +113,8 @@ class AoC202402Test {
      */
     @Test
     void partTwoPersonal() throws Exception {
-        Assumptions.assumeTrue(Files.exists(Path.of(PATH_PERSONAL)), ERROR_MESSAGE_FILE_NOT_FOUND);
+        Assumptions.assumeTrue("true".equals(properties.getProperty("TEST_FOR_PERSONAL_INPUT")), ERROR_MESSAGE_PERSONAL_DISABLED);
+        Assumptions.assumeTrue(AoCDownloader.doesFileExistOrIsDownloaded(YEAR, DAY, false), ERROR_MESSAGE_FILE_NOT_FOUND);
         Assertions.assertEquals(PERSONAL_RESULT_PART2, partTwoMethod.invoke(null, PATH_PERSONAL), ERROR_MESSAGE_PART2_PERSONAL);
     }
 
@@ -116,8 +124,6 @@ class AoC202402Test {
      * @return a stream of arguments containing sample inputs and expected results
      */
     private static Stream<Arguments> inputAndResultsSamples() {
-        return Stream.of(
-                Arguments.of("a", 2, 4)
-        );
+        return Stream.of(Arguments.of("a", 2, 4));
     }
 }
