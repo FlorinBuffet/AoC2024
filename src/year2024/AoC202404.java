@@ -1,18 +1,20 @@
 package year2024;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * This class solves AdventofCode 2024, Day 4.
  *
  * @author Florin Buffet
- * @version V1.2
+ * @version V2.0
  */
 public class AoC202404 {
+
+    private static final Pattern SAMX = Pattern.compile("SAMX");
+    private static final Pattern XMAS = Pattern.compile("XMAS");
 
     /**
      * Private constructor to prevent instantiation.
@@ -61,10 +63,10 @@ public class AoC202404 {
         for (int i = 0; i < playField.length; i++) {
             CharSequence thisLine = new String(playField[i]);
             String thisColumn = columnAsString(playField, i);
-            found += StringUtils.countMatches(thisLine, "XMAS");
-            found += StringUtils.countMatches(thisLine, "SAMX");
-            found += StringUtils.countMatches(thisColumn, "XMAS");
-            found += StringUtils.countMatches(thisColumn, "SAMX");
+            found += XMAS.split(thisLine, -1).length - 1;
+            found += SAMX.split(thisLine, -1).length - 1;
+            found += XMAS.split(thisColumn, -1).length - 1;
+            found += SAMX.split(thisColumn, -1).length - 1;
         }
 
         for (int i = 3; i < playField.length; i++) {
