@@ -6,6 +6,7 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 //TODO: cleanup class
+//TODO: Use BooleanGridHelper class
 
 /**
  * This class solves AdventofCode 2024, Day 10.
