@@ -53,7 +53,7 @@ public class AoC202400 {
      * @return the result as an integer.
      * @throws FileNotFoundException if the file is not found
      */
-    public static long partTwo(String path) throws FileNotFoundException {
+    public static int partTwo(String path) throws FileNotFoundException {
         return 0;
     }
 }
