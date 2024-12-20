@@ -4,16 +4,17 @@ package utility;
  * This class implements a grid of nodes with undirected, unweighted edges.
  *
  * @author Florin Buffet
- * @version V1.0.1
+ * @version V1.1
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "FeatureEnvy"})
 public class NodeGrid {
     private Node[][] nodes;
     private Node start;
     private Node end;
 
     /**
-     * Constructs a NodeGrid of the specified size and optionally links elements. Default start is top left, end is bottom right.
+     * Constructs a NodeGrid of the specified size and optionally links elements.
+     * Default start is top left, end is bottom right.
      *
      * @param size           the size of the grid (size x size)
      * @param elementsLinked if true, adjacent nodes will be linked bidirectionally
@@ -24,15 +25,24 @@ public class NodeGrid {
             for (int j = 0; j < size; j++) {
                 nodes[i][j] = new Node();
                 if (elementsLinked) {
-                    if (j > 0 && nodes[i][j - 1] != null)
-                        nodes[i][j].addBidirectionalNeighbor(nodes[i][j - 1], 1);
-                    if (i > 0 && nodes[i - 1][j] != null)
-                        nodes[i][j].addBidirectionalNeighbor(nodes[i - 1][j], 1);
+                    if (j > 0) nodes[i][j].addBidirectionalNeighbor(nodes[i][j - 1], 1);
+                    if (i > 0) nodes[i][j].addBidirectionalNeighbor(nodes[i - 1][j], 1);
                 }
             }
         }
         start = nodes[0][0];
         end = nodes[size - 1][size - 1];
+    }
+
+    /**
+     * Checks if a node exists at the specified coordinates.
+     *
+     * @param x the x-coordinate of the node
+     * @param y the y-coordinate of the node
+     * @return true if the node exists, false otherwise
+     */
+    public boolean doesNodeExist(int x, int y) {
+        return nodes[x][y] != null;
     }
 
     /**
@@ -42,9 +52,25 @@ public class NodeGrid {
      * @param y the y-coordinate of the node to delete
      */
     public void deleteNode(int x, int y) {
-        nodes[x][y].removeAllBidirectionalNeighbors();
-        //noinspection AssignmentToNull
-        nodes[x][y] = null;
+        if (nodes[x][y] != null) {
+            nodes[x][y].removeAllBidirectionalNeighbors();
+            //noinspection AssignmentToNull
+            nodes[x][y] = null;
+        }
+    }
+
+    /**
+     * Adds a new node at the specified coordinates and links it to its adjacent nodes.
+     *
+     * @param x the x-coordinate of the new node
+     * @param y the y-coordinate of the new node
+     */
+    public void addNode(int x, int y) {
+        nodes[x][y] = new Node();
+        if (y > 0) nodes[x][y].addBidirectionalNeighbor(nodes[x][y - 1], 1);
+        if (x > 0) nodes[x][y].addBidirectionalNeighbor(nodes[x - 1][y], 1);
+        if (y < nodes[0].length - 1) nodes[x][y].addBidirectionalNeighbor(nodes[x][y + 1], 1);
+        if (x < nodes.length - 1) nodes[x][y].addBidirectionalNeighbor(nodes[x + 1][y], 1);
     }
 
     /**
@@ -85,15 +111,15 @@ public class NodeGrid {
     private void resetDistanceFromStartToEnd() {
         for (Node[] node : nodes) {
             for (int j = 0; j < nodes[0].length; j++) {
-                if (node[j] != null)
-                    node[j].setLowestCost(Integer.MAX_VALUE);
+                if (node[j] != null) node[j].setLowestCost(Integer.MAX_VALUE);
             }
         }
     }
 
     /**
      * Returns a string representation of the NodeGrid.
-     * 'S' represents the start node, 'E' represents the end node, 'X' represents other nodes, and ' ' represents null nodes.
+     * 'S' represents the start node, 'E' represents the end node, 'X' represents other nodes,
+     * and ' ' represents null nodes.
      *
      * @return a string representation of the NodeGrid
      */
@@ -102,14 +128,10 @@ public class NodeGrid {
         StringBuilder sb = new StringBuilder();
         for (Node[] node : nodes) {
             for (int j = 0; j < nodes[0].length; j++) {
-                if (node[j] == null)
-                    sb.append(" ");
-                else if (node[j] == start)
-                    sb.append("S");
-                else if (node[j] == end)
-                    sb.append("E");
-                else
-                    sb.append("X");
+                if (node[j] == null) sb.append(" ");
+                else if (node[j] == start) sb.append("S");
+                else if (node[j] == end) sb.append("E");
+                else sb.append("X");
             }
             sb.append("\n");
         }

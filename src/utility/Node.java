@@ -7,10 +7,11 @@ import java.util.Map;
 /**
  * This class implements an own graph network with directed, weighted edges.
  * Note: this class has a natural ordering that is inconsistent with equals.
+ *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
-@SuppressWarnings({"unused", "CompareToUsesNonFinalVariable"})
+@SuppressWarnings({"unused", "CompareToUsesNonFinalVariable", "ClassHasNoToStringMethod"})
 public class Node implements Comparable<Node> {
     private Map<Node, Integer> neighbors;
     private int lowestCost = Integer.MAX_VALUE;
@@ -77,9 +78,11 @@ public class Node implements Comparable<Node> {
      * @param cost     the cost associated with the edge between this node and the neighbor node
      */
     public void addBidirectionalNeighbor(Node neighbor, int cost) {
-        //noinspection UnnecessaryThis
-        this.addNeighbor(neighbor, cost);
-        neighbor.addNeighbor(this, cost);
+        if (neighbor != null) {
+            //noinspection UnnecessaryThis
+            this.addNeighbor(neighbor, cost);
+            neighbor.addNeighbor(this, cost);
+        }
     }
 
     /**
@@ -111,6 +114,7 @@ public class Node implements Comparable<Node> {
 
     /**
      * Removes a neighbor from this node.
+     *
      * @param node the neighbor to remove
      */
     @SuppressWarnings("WeakerAccess")
@@ -121,6 +125,7 @@ public class Node implements Comparable<Node> {
     /**
      * Removes a neighbor from this node.
      * Also removes this node from the neighbor's neighbors.
+     *
      * @param node the neighbor to remove
      */
     public void removeBidirectionalNeighbor(Node node) {
@@ -151,25 +156,5 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node other) {
         //noinspection UnnecessaryThis
         return Integer.compare(this.lowestCost, other.lowestCost);
-    }
-
-    /**
-     * Returns a string representation of the Node.
-     * Includes the lowest cost, whether it is on the shortest path, and its neighbors.
-     *
-     * @return a string representation of the Node
-     */
-    @Override
-    public String toString() {
-        return "Node:" +
-                "\n" +
-                "Lowest Cost: " +
-                lowestCost +
-                "\n" +
-                "On Shortest Path: " +
-                onShortestPath +
-                "\n" +
-                "Neighbors: " +
-                neighbors;
     }
 }
