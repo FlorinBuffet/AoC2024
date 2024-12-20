@@ -66,7 +66,7 @@ public class AoC202418 {
             nodeGrid.deleteNode(blocker[1], blocker[0]);
         }
 
-        return nodeGrid.getDistanceFromStartToEnd();
+        return nodeGrid.calculateDistances();
     }
 
     /**
@@ -86,7 +86,7 @@ public class AoC202418 {
             int[] blocker = blockers.get(currentBlocker);
             nodeGrid.deleteNode(blocker[1], blocker[0]);
             currentBlocker++;
-        } while (nodeGrid.getDistanceFromStartToEnd() < Integer.MAX_VALUE);
+        } while (nodeGrid.calculateDistances() < Integer.MAX_VALUE);
         return blockers.get(currentBlocker - 1)[0] + "," + blockers.get(currentBlocker - 1)[1];
     }
 }

@@ -4,9 +4,9 @@ package utility;
  * This class implements a grid of nodes with undirected, unweighted edges.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
-@SuppressWarnings({"unused", "FeatureEnvy"})
+
 public class NodeGrid {
     private Node[][] nodes;
     private Node start;
@@ -44,31 +44,6 @@ public class NodeGrid {
     }
 
     /**
-     * Adds a bidirectional connection between two nodes with the specified cost.
-     *
-     * @param x1     the x-coordinate of the first node
-     * @param y1     the y-coordinate of the first node
-     * @param x2     the x-coordinate of the second node
-     * @param y2     the y-coordinate of the second node
-     * @param weight the cost of the connection
-     */
-    public void addCrossEdge(int x1, int y1, int x2, int y2, int weight) {
-        nodes[x1][y1].addBidirectionalNeighbor(nodes[x2][y2], weight);
-    }
-
-    /**
-     * Deletes a bidirectional connection between two nodes.
-     *
-     * @param x1 the x-coordinate of the first node
-     * @param y1 the y-coordinate of the first node
-     * @param x2 the x-coordinate of the second node
-     * @param y2 the y-coordinate of the second node
-     */
-    public void deleteCrossEdge(int x1, int y1, int x2, int y2) {
-        nodes[x1][y1].removeBidirectionalNeighbor(nodes[x2][y2]);
-    }
-
-    /**
      * Checks if a node exists at the specified coordinates.
      *
      * @param x the x-coordinate of the node
@@ -91,20 +66,6 @@ public class NodeGrid {
             //noinspection AssignmentToNull
             nodes[x][y] = null;
         }
-    }
-
-    /**
-     * Adds a new node at the specified coordinates and links it to its adjacent nodes.
-     *
-     * @param x the x-coordinate of the new node
-     * @param y the y-coordinate of the new node
-     */
-    public void addNode(int x, int y) {
-        nodes[x][y] = new Node();
-        if (y > 0) nodes[x][y].addBidirectionalNeighbor(nodes[x][y - 1], 1);
-        if (x > 0) nodes[x][y].addBidirectionalNeighbor(nodes[x - 1][y], 1);
-        if (y < nodes[0].length - 1) nodes[x][y].addBidirectionalNeighbor(nodes[x][y + 1], 1);
-        if (x < nodes.length - 1) nodes[x][y].addBidirectionalNeighbor(nodes[x + 1][y], 1);
     }
 
     /**
@@ -132,8 +93,8 @@ public class NodeGrid {
      *
      * @return the lowest cost from the start node to the end node
      */
-    public int getDistanceFromStartToEnd() {
-        this.resetDistanceFromStartToEnd();
+    public int calculateDistances() {
+        this.resetDistances();
         NodeAlgorithms.dijkstra(start);
         return end.getLowestCost();
     }
@@ -142,12 +103,23 @@ public class NodeGrid {
      * Resets the distance from the start node to the end node for all nodes in the grid.
      * Sets the lowest cost of each node to Integer.MAX_VALUE.
      */
-    private void resetDistanceFromStartToEnd() {
+    private void resetDistances() {
         for (Node[] node : nodes) {
             for (int j = 0; j < nodes[0].length; j++) {
                 if (node[j] != null) node[j].setLowestCost(Integer.MAX_VALUE);
             }
         }
+    }
+
+    /**
+     * Returns the lowest cost from the start node to the node at the specified coordinates without calculating it new.
+     *
+     * @param x the x-coordinate of the node
+     * @param y the y-coordinate of the node
+     * @return the lowest cost from the start node to the node at (x, y)
+     */
+    public int getDistanceFromStartToHere(int x, int y) {
+        return nodes[x][y].getLowestCost();
     }
 
     /**
