@@ -35,6 +35,40 @@ public class NodeGrid {
     }
 
     /**
+     * Returns the size of the grid.
+     *
+     * @return the size of the grid (number of rows or columns)
+     */
+    public int getSize() {
+        return nodes.length;
+    }
+
+    /**
+     * Adds a bidirectional connection between two nodes with the specified cost.
+     *
+     * @param x1     the x-coordinate of the first node
+     * @param y1     the y-coordinate of the first node
+     * @param x2     the x-coordinate of the second node
+     * @param y2     the y-coordinate of the second node
+     * @param weight the cost of the connection
+     */
+    public void addCrossEdge(int x1, int y1, int x2, int y2, int weight) {
+        nodes[x1][y1].addBidirectionalNeighbor(nodes[x2][y2], weight);
+    }
+
+    /**
+     * Deletes a bidirectional connection between two nodes.
+     *
+     * @param x1 the x-coordinate of the first node
+     * @param y1 the y-coordinate of the first node
+     * @param x2 the x-coordinate of the second node
+     * @param y2 the y-coordinate of the second node
+     */
+    public void deleteCrossEdge(int x1, int y1, int x2, int y2) {
+        nodes[x1][y1].removeBidirectionalNeighbor(nodes[x2][y2]);
+    }
+
+    /**
      * Checks if a node exists at the specified coordinates.
      *
      * @param x the x-coordinate of the node

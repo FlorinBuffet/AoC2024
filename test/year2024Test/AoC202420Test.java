@@ -28,7 +28,7 @@ class AoC202420Test {
     private static final int YEAR = 2024;
     private static final int DAY = 20;
     private static final int PERSONAL_RESULT_PART1 = 1311;
-    private static final int PERSONAL_RESULT_PART2 = 1186;
+    private static final int PERSONAL_RESULT_PART2 = 961364;
 
     // Creates the path to the sample files
     private static final String PATH_SAMPLE = "test/year" + YEAR + "Test/samples/AoC_" + YEAR + "_" + String.format("%02d", DAY) + "_";
@@ -124,6 +124,6 @@ class AoC202420Test {
      * @return a stream of arguments containing sample inputs and expected results
      */
     private static Stream<Arguments> inputAndResultsSamples() {
-        return Stream.of(Arguments.of("a", 0, 81));
+        return Stream.of(Arguments.of("a", 10, 285));
     }
 }
