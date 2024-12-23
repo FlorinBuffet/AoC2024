@@ -1,7 +1,9 @@
 package utility;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,12 +13,13 @@ import java.util.Map;
  * @author Florin Buffet
  * @version V1.2
  */
-@SuppressWarnings({"unused", "CompareToUsesNonFinalVariable", "ClassHasNoToStringMethod"})
+@SuppressWarnings({"unused", "CompareToUsesNonFinalVariable", "ClassHasNoToStringMethod", "InstanceVariableMayNotBeInitialized"})
 public class Node implements Comparable<Node> {
     private Map<Node, Integer> neighbors;
     private int lowestCost = Integer.MAX_VALUE;
-    @SuppressWarnings("RedundantFieldInitialization")
-    private boolean onShortestPath = false;
+    private boolean onShortestPath;
+    private String name;
+    private boolean visited;
 
     /**
      * Sets the lowest cost to reach this node.
@@ -62,6 +65,16 @@ public class Node implements Comparable<Node> {
     }
 
     /**
+     * Constructs a new Node with the specified name.
+     *
+     * @param name the name of the node
+     */
+    public Node(String name) {
+        this();
+        this.name = name;
+    }
+
+    /**
      * Adds a neighbor to this node with the specified cost.
      *
      * @param neighbor the neighbor node to add
@@ -92,6 +105,15 @@ public class Node implements Comparable<Node> {
      */
     public Map<Node, Integer> getNeighbors() {
         return Collections.unmodifiableMap(neighbors);
+    }
+
+    /**
+     * Gets the unweighted neighbors of this node.
+     *
+     * @return a list of unweighted neighbors of this node
+     */
+    public List<Node> getUnweightedNeighbors() {
+        return new ArrayList<>(neighbors.keySet());
     }
 
     /**
@@ -156,5 +178,32 @@ public class Node implements Comparable<Node> {
     public int compareTo(Node other) {
         //noinspection UnnecessaryThis
         return Integer.compare(this.lowestCost, other.lowestCost);
+    }
+
+    /**
+     * Gets the name of this node.
+     *
+     * @return the name of this node
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the visited status of this node.
+     *
+     * @param visited the visited status to set
+     */
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
+    /**
+     * Checks if this node has been visited.
+     *
+     * @return true if the node has been visited, false otherwise
+     */
+    public boolean isVisited() {
+        return visited;
     }
 }
