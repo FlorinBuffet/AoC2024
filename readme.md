@@ -1,7 +1,7 @@
 | Day | Status             |
 |-----|--------------------|
 | 01  | :heavy_check_mark: |
-| 02  | Not finished       |
+| 02  | :heavy_check_mark: |
 | 03  | Not finished       |
 | 04  | Not finished       |
 | 05  | Not finished       |

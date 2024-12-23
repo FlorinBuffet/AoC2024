@@ -1,9 +1,10 @@
 package year2024;
 
+import utility.InputParser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -28,21 +29,12 @@ public class AoC202402 {
      * @return the data as a list of lists of integers
      * @throws FileNotFoundException if the file is not found
      */
-    @SuppressWarnings("DynamicRegexReplaceableByCompiledPattern")
-    private static ArrayList<ArrayList<Integer>> readFile(String path) throws FileNotFoundException {
-        ArrayList<ArrayList<Integer>> inputData = new ArrayList<>();
-
+    private static List<List<Integer>> readFile(String path) throws FileNotFoundException {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
-        while (scanner.hasNextLine()) {
-            String data = scanner.nextLine();
-            List<String> tmpList = Arrays.stream(data.split("\\s+")).toList();
-            //noinspection ObjectAllocationInLoop
-            ArrayList<Integer> tmpListInt = new ArrayList<>(tmpList.stream().map(Integer::parseInt).toList());
-            inputData.add(tmpListInt);
-        }
+        List<List<Integer>> input = InputParser.parseIntegerListPerLine(scanner, " ");
         scanner.close();
-        return inputData;
+        return input;
     }
 
     /**
@@ -53,11 +45,11 @@ public class AoC202402 {
      * @throws FileNotFoundException if the file is not found
      */
     public static int partOne(String path) throws FileNotFoundException {
-        ArrayList<ArrayList<Integer>> inputData = readFile(path);
+        List<List<Integer>> inputData = readFile(path);
 
         int safeReports = 0;
         while (!inputData.isEmpty()) {
-            ArrayList<Integer> currentSample = inputData.removeFirst();
+            List<Integer> currentSample = inputData.removeFirst();
 
             boolean[] checkResult = checkSample(currentSample);
             boolean isSafe = checkResult[0];
@@ -78,7 +70,7 @@ public class AoC202402 {
      * @throws FileNotFoundException if the file is not found
      */
     public static int partTwo(String path) throws FileNotFoundException {
-        ArrayList<ArrayList<Integer>> inputData = readFile(path);
+        List<List<Integer>> inputData = readFile(path);
 
         int safeReports = 0;
         while (!inputData.isEmpty()) {
@@ -86,7 +78,7 @@ public class AoC202402 {
             boolean safeVariant = false;
             for (int i = 0; i < currentSample.size(); i++) {
                 //noinspection ObjectAllocationInLoop
-                ArrayList<Integer> currentCase = new ArrayList<>(currentSample);
+                List<Integer> currentCase = new ArrayList<>(currentSample);
 
                 //noinspection SuspiciousListRemoveInLoop
                 currentCase.remove(i);
@@ -111,7 +103,7 @@ public class AoC202402 {
      * @return an array of booleans: [isSafe, isIncreasing, isDecreasing]
      */
     @SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-    private static boolean[] checkSample(ArrayList<Integer> currentSample) {
+    private static boolean[] checkSample(List<Integer> currentSample) {
         int lastNumber = currentSample.removeFirst();
         boolean isIncreasing = false;
         boolean isDecreasing = false;
