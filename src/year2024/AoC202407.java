@@ -1,20 +1,18 @@
 package year2024;
 
+import utility.InputParser;
 import utility.MathHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class solves AdventofCode 2024, Day 7.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202407 {
 
@@ -35,17 +33,7 @@ public class AoC202407 {
     private static List<List<Long>> readFile(String path) throws FileNotFoundException {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
-        Pattern pattern = Pattern.compile("(\\d+)");
-        List<List<Long>> data = new ArrayList<>();
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            Matcher matcher = pattern.matcher(line);
-            List<Long> temp = new ArrayList<>();
-            while (matcher.find()) {
-                temp.add(Long.parseLong(matcher.group()));
-            }
-            data.add(temp);
-        }
+        List<List<Long>> data = InputParser.parseLongListPerLine(scanner, " ", ":");
         scanner.close();
         return data;
     }

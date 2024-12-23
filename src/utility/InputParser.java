@@ -93,6 +93,28 @@ public class InputParser {
     }
 
     /**
+     * Parses a list of lists of longs from the given Scanner.
+     * Each line of input is split into longs using the specified delimiter.
+     *
+     * @param scan the Scanner to read the input from
+     * @param delimiterRegex the delimiter as regex to use when splitting the longs
+     * @return a list of lists of strings, where each inner list represents a line of input
+     */
+    @SuppressWarnings("MethodWithMultipleReturnPoints")
+    public static List<List<Long>> parseLongListPerLine(Scanner scan, String delimiterRegex, String remove) {
+        List<List<Long>> list = new ArrayList<>();
+        while (scan.hasNextLine()) {
+            String line = scan.nextLine();
+            if (line.isEmpty()) {
+                return list;
+            }
+            line = line.replace(remove, "");
+            list.add(Stream.of(line.split(delimiterRegex)).map(Long::parseLong).collect(Collectors.toList()));
+        }
+        return list;
+    }
+
+    /**
      * Parses a list of integers from the given Scanner.
      * The method reads integers from the Scanner until no more integers are available.
      *
