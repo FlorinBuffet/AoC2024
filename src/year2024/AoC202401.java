@@ -11,7 +11,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 1.
  *
  * @author Florin Buffet
- * @version V1.4
+ * @version V1.5
  */
 public class AoC202401 {
 
@@ -53,7 +53,6 @@ public class AoC202401 {
      */
     public static int partOne(String path) throws FileNotFoundException {
         // Read the input file and get the data as two lists
-        //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
@@ -79,7 +78,6 @@ public class AoC202401 {
      */
     public static long partTwo(String path) throws FileNotFoundException {
         // Read the input file and get the data as two lists
-        //noinspection unchecked
         List<Integer>[] lists = readFile(path);
         List<Integer> left = lists[0];
         List<Integer> right = lists[1];
