@@ -10,7 +10,7 @@ import java.util.stream.Stream;
  * This class implements some input parser functions.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class InputParser {
 
@@ -76,13 +76,18 @@ public class InputParser {
      * Each line of input is split into integers using the specified delimiter.
      *
      * @param scan the Scanner to read the input from
-     * @param delimiter the delimiter to use when splitting the strings
+     * @param delimiterRegex the delimiter as regex to use when splitting the integers
      * @return a list of lists of strings, where each inner list represents a line of input
      */
-    public static List<List<Integer>> parseIntegerListPerLine(Scanner scan, String delimiter) {
+    @SuppressWarnings("MethodWithMultipleReturnPoints")
+    public static List<List<Integer>> parseIntegerListPerLine(Scanner scan, String delimiterRegex) {
         List<List<Integer>> list = new ArrayList<>();
         while (scan.hasNextLine()) {
-            list.add(Stream.of(scan.nextLine().split(delimiter)).map(Integer::parseInt).collect(Collectors.toList()));
+            String line = scan.nextLine();
+            if (line.isEmpty()) {
+                return list;
+            }
+            list.add(Stream.of(line.split(delimiterRegex)).map(Integer::parseInt).collect(Collectors.toList()));
         }
         return list;
     }
