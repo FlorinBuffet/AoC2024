@@ -1,18 +1,20 @@
 package year2024;
 
+import utility.InputParser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * This class solves AdventofCode 2024, Day 11.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202411 {
 
@@ -36,14 +38,10 @@ public class AoC202411 {
     private static List<Long> readFile(String path) throws FileNotFoundException {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
-        String line = scanner.nextLine();
+        List<Integer> dataInt = InputParser.parseIntegerList(scanner);
+        List<Long> dataLong = dataInt.stream().map(Long::valueOf).collect(Collectors.toList());
         scanner.close();
-        List<Long> data = new ArrayList<>();
-        for (String s : line.split(" ")) {
-            data.add(Long.parseLong(s));
-        }
-        scanner.close();
-        return data;
+        return dataLong;
     }
 
     /**
