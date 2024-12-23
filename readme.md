@@ -4,7 +4,7 @@
 | 02  | :heavy_check_mark: |
 | 03  | :heavy_check_mark: |
 | 04  | :heavy_check_mark: |
-| 05  | Not finished       |
+| 05  | :heavy_check_mark: |
 | 06  | Not finished       |
 | 07  | Not finished       |
 | 08  | Not finished       |
