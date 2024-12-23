@@ -8,18 +8,17 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//TODO: cleanup class
-
 /**
- * This class solves AdventofCode 2024, Day 3.
+ * This class solves AdventofCode 2024, Day 13.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class AoC202413 {
 
-    public static final int BUTTON_A_COST = 3;
-    public static final int BUTTON_B_COST = 1;
+    private static final int BUTTON_A_COST = 3;
+    private static final int BUTTON_B_COST = 1;
+    private static final long PART2_MISTAKE = 10000000000000L;
 
     /**
      * Private constructor to prevent instantiation.
@@ -40,7 +39,7 @@ public class AoC202413 {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
 
-        String regex = "[XY]\\+(\\d+)|[XY]=(\\d+)";
+        @SuppressWarnings("RegExpAnonymousGroup") String regex = "[XY]\\+(\\d+)|[XY]=(\\d+)";
         Pattern pattern = Pattern.compile(regex);
 
         while (scanner.hasNextLine()) {
@@ -79,6 +78,7 @@ public class AoC202413 {
             int targetY = lists.removeFirst();
 
             double[] solution = solveSystem(buttonAX, buttonBX, targetX, buttonAY, buttonBY, targetY);
+            //noinspection FloatingPointEquality
             if (solution[0] == Math.floor(solution[0]) && solution[1] == Math.floor(solution[1])) {
                 sum += BUTTON_A_COST * (int) solution[0] + BUTTON_B_COST * (int) solution[1];
             }
@@ -99,6 +99,7 @@ public class AoC202413 {
      * @param c2 constant term in the second equation
      * @return an array containing the values of x and y that solve the system of equations
      */
+    @SuppressWarnings("MethodWithTooManyParameters")
     private static double[] solveSystem(int a1, int b1, long c1, int a2, int b2, long c2) {
         double y = (double) (c2 * a1 - c1 * a2) / (a1 * b2 - a2 * b1);
         double x = (c1 - b1 * y) / a1;
@@ -125,7 +126,8 @@ public class AoC202413 {
             int targetX = lists.removeFirst();
             int targetY = lists.removeFirst();
 
-            double[] solution = solveSystem(buttonAX, buttonBX, targetX + 10000000000000L, buttonAY, buttonBY, targetY + 10000000000000L);
+            double[] solution = solveSystem(buttonAX, buttonBX, targetX + PART2_MISTAKE, buttonAY, buttonBY, targetY + PART2_MISTAKE);
+            //noinspection FloatingPointEquality
             if (solution[0] == Math.floor(solution[0]) && solution[1] == Math.floor(solution[1])) {
                 sum += BUTTON_A_COST * (long) solution[0] + BUTTON_B_COST * (long) solution[1];
             }
