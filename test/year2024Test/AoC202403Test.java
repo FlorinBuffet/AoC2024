@@ -77,6 +77,7 @@ class AoC202403Test {
     @ParameterizedTest(name = "{0} is expected to output {1}")
     @MethodSource("inputAndResultsSamples")
     void partOneSampleA(String sample, int expectedResult) throws Exception {
+        Assumptions.assumeFalse(expectedResult == -1, "This test is not relevant for part one.");
         Assertions.assertEquals(expectedResult, partOneMethod.invoke(null, PATH_SAMPLE + sample + ENDING), ERROR_MESSAGE_PART1 + sample + ERROR_MESSAGE_ENDING);
     }
 
@@ -103,6 +104,7 @@ class AoC202403Test {
     @ParameterizedTest(name = "{0} is expected to output {2}")
     @MethodSource("inputAndResultsSamples")
     void partTwoSampleA(String sample, int irrelevant, int expectedResult) throws Exception {
+        Assumptions.assumeFalse(expectedResult == -1, "This test is not relevant for part two.");
         Assertions.assertEquals(expectedResult, partTwoMethod.invoke(null, PATH_SAMPLE + sample + ENDING), ERROR_MESSAGE_PART2 + sample + ERROR_MESSAGE_ENDING);
     }
 
@@ -124,6 +126,7 @@ class AoC202403Test {
      * @return a stream of arguments containing sample inputs and expected results
      */
     private static Stream<Arguments> inputAndResultsSamples() {
-        return Stream.of(Arguments.of("a", 161, 48));
+        return Stream.of(Arguments.of("a", 161, -1),
+                Arguments.of("b", -1, 48));
     }
 }

@@ -2,7 +2,7 @@
 |-----|--------------------|
 | 01  | :heavy_check_mark: |
 | 02  | :heavy_check_mark: |
-| 03  | Not finished       |
+| 03  | :heavy_check_mark: |
 | 04  | Not finished       |
 | 05  | Not finished       |
 | 06  | Not finished       |
