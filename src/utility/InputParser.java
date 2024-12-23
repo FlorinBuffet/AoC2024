@@ -72,15 +72,31 @@ public class InputParser {
     }
 
     /**
+     * Parses a list of lists of integers from the given Scanner.
+     * Each line of input is split into integers using the specified delimiter.
+     *
+     * @param scan the Scanner to read the input from
+     * @param delimiter the delimiter to use when splitting the strings
+     * @return a list of lists of strings, where each inner list represents a line of input
+     */
+    public static List<List<Integer>> parseIntegerListPerLine(Scanner scan, String delimiter) {
+        List<List<Integer>> list = new ArrayList<>();
+        while (scan.hasNextLine()) {
+            list.add(Stream.of(scan.nextLine().split(delimiter)).map(Integer::parseInt).collect(Collectors.toList()));
+        }
+        return list;
+    }
+
+    /**
      * Parses a list of integers from the given Scanner.
      * The method reads integers from the Scanner until no more integers are available.
      *
      * @param scan the Scanner to read the integers from
      * @return a list of integers parsed from the Scanner
      */
-    public static List<Integer> parseIntegerList(Scanner scan){
+    public static List<Integer> parseIntegerList(Scanner scan) {
         List<Integer> list = new ArrayList<>();
-        while(scan.hasNextInt()){
+        while (scan.hasNextInt()) {
             list.add(scan.nextInt());
         }
         return list;
