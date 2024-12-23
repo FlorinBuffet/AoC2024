@@ -1,13 +1,16 @@
 package utility;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * This class implements some input parser functions.
  *
  * @author Florin Buffet
- * @version V1.0
+ * @version V1.1
  */
 public class InputParser {
 
@@ -50,5 +53,36 @@ public class InputParser {
             matrix[i] = Stream.of(scan.nextLine().split(delimiter)).mapToInt(Integer::parseInt).toArray();
         }
         return matrix;
+    }
+
+    /**
+     * Parses a list of lists of strings from the given Scanner.
+     * Each line of input is split into strings using the specified delimiter.
+     *
+     * @param scan the Scanner to read the input from
+     * @param delimiter the delimiter to use when splitting the strings
+     * @return a list of lists of strings, where each inner list represents a line of input
+     */
+    public static List<List<String>> parseStringListPerLine(Scanner scan, String delimiter) {
+        List<List<String>> list = new ArrayList<>();
+        while (scan.hasNextLine()) {
+            list.add(Stream.of(scan.nextLine().split(delimiter)).collect(Collectors.toList()));
+        }
+        return list;
+    }
+
+    /**
+     * Parses a list of integers from the given Scanner.
+     * The method reads integers from the Scanner until no more integers are available.
+     *
+     * @param scan the Scanner to read the integers from
+     * @return a list of integers parsed from the Scanner
+     */
+    public static List<Integer> parseIntegerList(Scanner scan){
+        List<Integer> list = new ArrayList<>();
+        while(scan.hasNextInt()){
+            list.add(scan.nextInt());
+        }
+        return list;
     }
 }
