@@ -1,5 +1,7 @@
 package year2024;
 
+import utility.InputParser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -9,7 +11,7 @@ import java.util.Scanner;
  * This class solves AdventofCode 2024, Day 6.
  *
  * @author Florin Buffet
- * @version V1.1
+ * @version V1.2
  */
 public class AoC202406 {
 
@@ -30,16 +32,7 @@ public class AoC202406 {
         File file = new File(path);
         Scanner scanner = new Scanner(file);
 
-        char[][] data = new char[1][1];
-        int currentLine = 0;
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            if (data.length == 1) {
-                data = new char[line.length()][line.length()];
-            }
-            data[currentLine] = line.toCharArray();
-            currentLine++;
-        }
+        char[][] data = InputParser.parseCharSquareMatrix(scanner);
         scanner.close();
         return data;
     }
