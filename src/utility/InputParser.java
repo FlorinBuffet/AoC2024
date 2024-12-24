@@ -60,13 +60,39 @@ public class InputParser {
      * Each line of input is split into strings using the specified delimiter.
      *
      * @param scan the Scanner to read the input from
-     * @param delimiter the delimiter to use when splitting the strings
+     * @param delimiterRegex the delimiter to use when splitting the strings as regex
+     * @param remove the character sequence to remove from the input before splitting
      * @return a list of lists of strings, where each inner list represents a line of input
      */
-    public static List<List<String>> parseStringListPerLine(Scanner scan, String delimiter) {
+    public static List<List<String>> parseStringListPerLine(Scanner scan, String delimiterRegex, CharSequence remove) {
         List<List<String>> list = new ArrayList<>();
         while (scan.hasNextLine()) {
-            list.add(Stream.of(scan.nextLine().split(delimiter)).collect(Collectors.toList()));
+            String line = scan.nextLine();
+            if (line.isEmpty()) {
+                return list;
+            }
+            line = line.replace(remove, "");
+            list.add(Stream.of(line.split(delimiterRegex)).collect(Collectors.toList()));
+        }
+        return list;
+    }
+
+    /**
+     * Parses a list of lists of strings from the given Scanner.
+     * Each line of input is split into strings using the specified delimiter.
+     *
+     * @param scan the Scanner to read the input from
+     * @param delimiterRegex the delimiter to use when splitting the strings as regex
+     * @return a list of lists of strings, where each inner list represents a line of input
+     */
+    public static List<List<String>> parseStringListPerLine(Scanner scan, String delimiterRegex) {
+        List<List<String>> list = new ArrayList<>();
+        while (scan.hasNextLine()) {
+            String line = scan.nextLine();
+            if (line.isEmpty()) {
+                return list;
+            }
+            list.add(Stream.of(line.split(delimiterRegex)).collect(Collectors.toList()));
         }
         return list;
     }
@@ -98,10 +124,11 @@ public class InputParser {
      *
      * @param scan the Scanner to read the input from
      * @param delimiterRegex the delimiter as regex to use when splitting the longs
+     * @param remove the character sequence to remove from the input before splitting
      * @return a list of lists of strings, where each inner list represents a line of input
      */
     @SuppressWarnings("MethodWithMultipleReturnPoints")
-    public static List<List<Long>> parseLongListPerLine(Scanner scan, String delimiterRegex, String remove) {
+    public static List<List<Long>> parseLongListPerLine(Scanner scan, String delimiterRegex, CharSequence remove) {
         List<List<Long>> list = new ArrayList<>();
         while (scan.hasNextLine()) {
             String line = scan.nextLine();
