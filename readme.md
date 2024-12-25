@@ -23,5 +23,5 @@
 | 21  | Not finished         |
 | 22  | Not finished         |
 | 23  | Not finished         |
-| 24  | Not finished         |
-| 25  | Part 2 not automated |
+| 24  | Part 2 not automated |
+| 25  | :heavy_check_mark:   |

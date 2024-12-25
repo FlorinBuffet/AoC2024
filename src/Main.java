@@ -8,7 +8,7 @@ import java.net.URISyntaxException;
  * This class solves AdventofCode 2024
  *
  * @author Florin Buffet
- * @version V1.2
+ * @version V1.3
  */
 public class Main {
     private Main() {
@@ -39,10 +39,13 @@ public class Main {
                 //noinspection StringConcatenationMissingWhitespace
                 Class<?> usedClass = Class.forName("year" + year + "." + className);
                 Method partOneMethod = usedClass.getMethod("partOne", String.class);
-                Method partTwoMethod = usedClass.getMethod("partTwo", String.class);
-
                 System.out.println(year + " Day " + day + ", Part 1: " + partOneMethod.invoke(null, filePath));
-                System.out.println(year + " Day " + day + ", Part 2: " + partTwoMethod.invoke(null, filePath));
+
+                //noinspection ConstantValue
+                if (day != 25) {
+                    Method partTwoMethod = usedClass.getMethod("partTwo", String.class);
+                    System.out.println(year + " Day " + day + ", Part 2: " + partTwoMethod.invoke(null, filePath));
+                }
             } catch (Exception e) {
                 //noinspection CallToPrintStackTrace
                 e.printStackTrace();
